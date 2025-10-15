@@ -1,0 +1,34 @@
+N = int(input())
+A = list(map(int, input().split()))
+
+A.sort(reverse=True)
+
+alice = 0
+bob = 0
+
+for i in range(N):
+    if i % 2 == 0:
+        alice += A[i]
+    else:
+        bob += A[i]
+
+print(alice - bob)
+
+
+
+
+# N = int(input())
+# A = list(map(int, input().split()))
+
+# a = 0
+# b = 0
+
+# for i in range(N):
+#     m = max(A)
+#     if i % 2 == 0:
+#         a += m
+#     else:
+#         b += m
+#     A.remove(m) 
+
+# print(a - b)
