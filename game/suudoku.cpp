@@ -154,11 +154,12 @@ bool f(int x, int y) {
         if (ny >= N) {
             ny %= N;
             nx++;
-        } 
-        if (nx >= N && ny >= N) break;
+        }
+        if (nx >= N-1 && ny >= N-1 && suudoku[nx][ny] != '.') return true;
     }
 
     for (char c : num) {
+        if (0 > nx || nx >= N || 0 > ny || ny >= N) continue;
         if (!row(nx, c)) continue;
         if (!col(ny, c)) continue;
         if (!block(nx, ny, c)) continue;
