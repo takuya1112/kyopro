@@ -106,80 +106,84 @@ return floor(x + y - 1, y);
 
 const int INF = 1e9;
 const ll LINF = 4e18;
-const int N = 9;
-const char num[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+const int MOD = 1e4;
 
-// --- solve ---
-vs suudoku(N);
-
-void print() {
-    rep(i, N) {
-        rep(j, N) {
-            if (j % 3 == 0 && j != 0) cout << "| ";
-            cout << suudoku[i][j] << ' '; 
-        } cout << endl;
-        if (i % 3 == 2 && i != N - 1) {
-            rep(j, N * 2 + 3) {
-                cout << '-';
-            } cout << endl;
-        }
-    }
-}
-
-bool row(int x, char c) {
-    rep(i, N) {
-        if (suudoku[x][i] == c) return false; 
-    } 
-    return true;
-}
-
-bool col(int y, char c) {
-    rep(i, N) {
-        if (suudoku[i][y] == c) return false;
-    }
-    return true;
-}
-
-bool block(int x, int y, char c) {
-    x = x / 3 * 3;
-    y = y / 3 * 3;
-    rep(i, 3) rep(j, 3) {
-        if (suudoku[x + i][y + j] == c) return false;
-    }
-    return true;
-}
-
-bool f(int x, int y) {
-    if (x == N-1 && y == N-1) {
-        return true;
-    }
-   
-    int nx = x, ny = y; 
-    while (suudoku[nx][ny] != '.') {
-        ny++;
-        if (ny >= N) {
-            ny %= N;
-            nx++;
-        }
-        if (nx >= N-1 && ny >= N-1 && suudoku[nx][ny] != '.') return true;
-    }
-
-    for (char c : num) {
-        if (0 > nx || nx >= N || 0 > ny || ny >= N) continue;
-        if (!row(nx, c)) continue;
-        if (!col(ny, c)) continue;
-        if (!block(nx, ny, c)) continue;
-        suudoku[nx][ny] = c;
-        if (f(nx, ny)) return true; 
-        suudoku[nx][ny] = '.';
-    }   
-    
-    return false;
-}
+// ========================================
+//                  solve
+// ========================================
 
 int main() {
-    rep(i, N) cin >> suudoku[i];
-    if (f(0, 0)) print();
-    else cout << "There are't answer" << endl;
-    return 0;
+    int N, K;
+    cin >> N >> K;
+    vint A(N, -1);
+    rep(i, K) {
+        int a, b;
+        cin >> a >> b;
+        a--;
+        A[a] = b;
+    }
+
+    vector dp(N + 1, vector(4, vector(4, 0)));
+    dp[0][0][0] = 1;
+    rep(i, N) rep(j, 4) rep(k, 4) {
+        if (dp[i][j][k] == 0) continue;
+        rep2(l, 1, 4) {
+            if (l == j && l == k) continue;
+            if (A[i] != -1 && A[i] != l) continue;
+            dp[i + 1][l][j] = (dp[i + 1][l][j] + dp[i][j][k]) % 10000;
+        }
+    }
+
+    ll res = 0;
+    rep2(j, 1, 4) rep2(k, 1, 4) res = (res + dp[N][j][k]) % 10000;
+    cout << res << endl;
 }
+
+// mycode wa
+// int main() {
+//     int N, K;
+//     cin >> N >> K;
+//     map<int, int> A;
+//     rep(i, K) {
+//         int a, b;
+//         b--;
+//         cin >> a >> b;
+//         A.insert({a, b});
+//     }
+
+//     vector<vector<vint>> dp(N + 1, vector<vint>(3, vint(3)));
+//     rep(i, K) dp[0][i][0] = 1;
+//     rep(i, N) {             
+//         if (A.find(i + 1) != A.end()) {
+//             int b = A[i + 1];
+//             rep(j, 2)  {
+//                 dp[i + 1][b][j + 1] += dp[i][b][j];
+//                 dp[i + 1][b][j + 1] %= MOD;
+//             }   
+//             rep(j, 3) {
+//                 if (j == b) continue;
+//                 rep(k, 2) {
+//                     dp[i + 1][j][0] += dp[i][b][k];
+//                     dp[i + 1][j][0] %= MOD;
+//                 }
+//             }   
+//         } else {
+//             rep(j, 3) {
+//                 rep(k, 2) {
+//                     dp[i + 1][j][k + 1] += dp[i][j][k];
+//                     dp[i + 1][j][k + 1] %= MOD;
+//                     rep(l, 3) {
+//                         if (l == k) continue;
+//                         rep(m, 2) {
+//                             dp[i + 1][l][m] += dp[i][j][k];
+//                             dp[i + 1][l][m] %= MOD;
+//                         }
+//                     }
+//                 }
+//             }
+//         } 
+//     }
+
+//     cout << dp[N] << endl;
+//     return 0;
+// }

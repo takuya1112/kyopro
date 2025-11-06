@@ -106,80 +106,55 @@ return floor(x + y - 1, y);
 
 const int INF = 1e9;
 const ll LINF = 4e18;
-const int N = 9;
-const char num[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-// --- solve ---
-vs suudoku(N);
-
-void print() {
-    rep(i, N) {
-        rep(j, N) {
-            if (j % 3 == 0 && j != 0) cout << "| ";
-            cout << suudoku[i][j] << ' '; 
-        } cout << endl;
-        if (i % 3 == 2 && i != N - 1) {
-            rep(j, N * 2 + 3) {
-                cout << '-';
-            } cout << endl;
-        }
-    }
-}
-
-bool row(int x, char c) {
-    rep(i, N) {
-        if (suudoku[x][i] == c) return false; 
-    } 
-    return true;
-}
-
-bool col(int y, char c) {
-    rep(i, N) {
-        if (suudoku[i][y] == c) return false;
-    }
-    return true;
-}
-
-bool block(int x, int y, char c) {
-    x = x / 3 * 3;
-    y = y / 3 * 3;
-    rep(i, 3) rep(j, 3) {
-        if (suudoku[x + i][y + j] == c) return false;
-    }
-    return true;
-}
-
-bool f(int x, int y) {
-    if (x == N-1 && y == N-1) {
-        return true;
-    }
-   
-    int nx = x, ny = y; 
-    while (suudoku[nx][ny] != '.') {
-        ny++;
-        if (ny >= N) {
-            ny %= N;
-            nx++;
-        }
-        if (nx >= N-1 && ny >= N-1 && suudoku[nx][ny] != '.') return true;
-    }
-
-    for (char c : num) {
-        if (0 > nx || nx >= N || 0 > ny || ny >= N) continue;
-        if (!row(nx, c)) continue;
-        if (!col(ny, c)) continue;
-        if (!block(nx, ny, c)) continue;
-        suudoku[nx][ny] = c;
-        if (f(nx, ny)) return true; 
-        suudoku[nx][ny] = '.';
-    }   
-    
-    return false;
-}
+// ========================================
+//                  solve
+// ========================================
 
 int main() {
-    rep(i, N) cin >> suudoku[i];
-    if (f(0, 0)) print();
-    else cout << "There are't answer" << endl;
-    return 0;
+    int D, N;
+    cin >> D >> N;
+    vint T(D), A(N), B(N), C(N);
+    rep(i, D) cin >> T[i];
+    rep(i, N) cin >> A[i] >> B[i] >> C[i];
+
+    vector dp(D + 1, vector(N, -INF));
+    rep(i, N) if (A[i] <= T[0] && T[0] <= B[i]) dp[1][i] = 0;
+    rep2(d, 1, D) {
+        rep(i, N) {
+            rep(i2, N) {
+                if (T[d] < A[i2] || B[i2] < T[d]) continue;
+                chmax(dp[d + 1][i2], dp[d][i] + abs(C[i] - C[i2]));
+            }
+        }
+    }
+    int res = 0;
+    rep(i, N) chmax(res, dp[D][i]);
+    cout << res << endl;
 }
+
+// mycode AC
+// int main() {
+//     int D, N;
+//     cin >> D >> N;
+//     vint T(D), A(N), B(N), C(N);
+//     rep(i, D) cin >> T[i];
+//     rep(i, N) cin >> A[i] >> B[i] >> C[i];
+
+//     vector<vint> dp(D, vint(N));
+
+//     rep2(i, 1, D) {
+//         rep(j, N) {
+//             if (T[i] < A[j] || T[i] > B[j]) continue;
+//             rep(k, N) {
+//                 if (T[i - 1] < A[k] || T[i - 1] > B[k]) continue;
+//                dp[i][j] = max(dp[i][j] ,dp[i-1][k] + abs(C[j] - C[k])); 
+//             }
+//         }
+//     }
+
+//     int ans = 0;
+//     rep(i, N) ans = max(ans, dp[D - 1][i]);
+//     cout << ans << endl;
+//     return 0;
+// }

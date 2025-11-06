@@ -106,80 +106,51 @@ return floor(x + y - 1, y);
 
 const int INF = 1e9;
 const ll LINF = 4e18;
-const int N = 9;
-const char num[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-// --- solve ---
-vs suudoku(N);
-
-void print() {
-    rep(i, N) {
-        rep(j, N) {
-            if (j % 3 == 0 && j != 0) cout << "| ";
-            cout << suudoku[i][j] << ' '; 
-        } cout << endl;
-        if (i % 3 == 2 && i != N - 1) {
-            rep(j, N * 2 + 3) {
-                cout << '-';
-            } cout << endl;
-        }
-    }
-}
-
-bool row(int x, char c) {
-    rep(i, N) {
-        if (suudoku[x][i] == c) return false; 
-    } 
-    return true;
-}
-
-bool col(int y, char c) {
-    rep(i, N) {
-        if (suudoku[i][y] == c) return false;
-    }
-    return true;
-}
-
-bool block(int x, int y, char c) {
-    x = x / 3 * 3;
-    y = y / 3 * 3;
-    rep(i, 3) rep(j, 3) {
-        if (suudoku[x + i][y + j] == c) return false;
-    }
-    return true;
-}
-
-bool f(int x, int y) {
-    if (x == N-1 && y == N-1) {
-        return true;
-    }
-   
-    int nx = x, ny = y; 
-    while (suudoku[nx][ny] != '.') {
-        ny++;
-        if (ny >= N) {
-            ny %= N;
-            nx++;
-        }
-        if (nx >= N-1 && ny >= N-1 && suudoku[nx][ny] != '.') return true;
-    }
-
-    for (char c : num) {
-        if (0 > nx || nx >= N || 0 > ny || ny >= N) continue;
-        if (!row(nx, c)) continue;
-        if (!col(ny, c)) continue;
-        if (!block(nx, ny, c)) continue;
-        suudoku[nx][ny] = c;
-        if (f(nx, ny)) return true; 
-        suudoku[nx][ny] = '.';
-    }   
-    
-    return false;
-}
+// ========================================
+//                  solve
+// ========================================
 
 int main() {
-    rep(i, N) cin >> suudoku[i];
-    if (f(0, 0)) print();
-    else cout << "There are't answer" << endl;
-    return 0;
+    int N, M;
+    cin >> N >> M;
+    vll D(N), C(M);
+    rep(i, N) cin >> D[i];
+    rep(i, M) cin >> C[i];
+
+    vector dp(N + 1, vector(M + 1, INF));
+    dp[0][0] = 0;
+
+    rep(i, N + 1) {
+        rep(j, M) {
+            chmin(dp[i][j + 1], dp[i][j]);
+            if (i + 1 <= N) chmin(dp[i + 1][j + 1], dp[i][j] + D[i] * C[j]);
+        }
+    }
+    
+    cout << dp[N][M] << endl;
 }
+
+// mycode AC
+// int main() {
+//     int N, M;
+//     cin >> N >> M;
+//     vint D(N), C(M);
+//     rep(i, N) cin >> D[i];
+//     rep(i, M) cin >> C[i];
+
+//     vector dp(N + 1, vint(M + 1, INF));
+//     dp[0][0] = 0;
+
+//     rep(i, N) rep(j, M) {
+//         rep(k, M - N + 1) {
+//             if (i + j + k >= M) continue; 
+//             chmin(dp[i + 1][j + k], dp[i][j] + D[i] * C[i + j + k]);
+//         }
+//     }
+    
+//     int ans = INF;
+//     rep(i, M) chmin(ans, dp[N][i]);
+//     cout << ans << endl;
+//     return 0;
+// }
