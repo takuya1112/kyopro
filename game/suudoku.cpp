@@ -153,7 +153,7 @@ bool f(int x, int y) {
     if (x == N-1 && y == N-1) {
         return true;
     }
-   
+    
     int nx = x, ny = y; 
     while (suudoku[nx][ny] != '.') {
         ny++;
