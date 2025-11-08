@@ -178,8 +178,10 @@ bool f(int x, int y) {
 }
 
 int main() {
+    // int ti = clock();
     rep(i, N) cin >> suudoku[i];
     if (f(0, 0)) print();
     else cout << "There are't answer" << endl;
+    // printf("Execution Time : %.4lf sec\n", 1.0 * (clock() - ti) / CLOCKS_PER_SEC);
     return 0;
 }
