@@ -126,19 +126,17 @@ int main() {
 
     n = ps.size();  
     W /= 2;
-    vector dp(n + 1, vll(W + 1, - LINF));
-    dp[0][0] = 0;
+    vll dp(W + 1);
 
     rep(i, n) {
+        vll old(W + 1, -LINF);
         auto [w, v] = ps[i];
-        rep(j, W + 1) {
-            chmax(dp[i + 1][j], dp[i][j]);
-            if (j + w <= W) chmax(dp[i + 1][j + w], dp[i][j] + v); 
+        rrep(j, W - w + 1) {
+            chmax(dp[j + w], dp[j] + v); 
         }
     }
-    
-    ll ans = -INF;
-    rep(j, W + 1) chmax(ans, dp[n][j]);
+
+    ll ans = dp[W];
     cout << ans + sumb << endl;
     return 0;
 }
