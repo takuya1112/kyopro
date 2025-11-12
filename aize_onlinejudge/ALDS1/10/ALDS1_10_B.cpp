@@ -1,10 +1,5 @@
-#ifndef ONLINE_JUDGE
-#define _GLIBCXX_DEBUG
-#endif
 #include <bits/stdc++.h>
 using namespace std;
-#include <atcoder/all>
-using namespace atcoder;
 
 // --- utility ---
 template<class S, class T> inline bool chmax(S &a, T b) { return (a < b ? a = b, 1 : 0); }
@@ -106,85 +101,49 @@ return floor(x + y - 1, y);
 
 const int INF = 1e9;
 const ll LINF = 4e18;
-const int MOD = 1e4;
+static const int N = 100;
 
 // ========================================
 //                  solve
 // ========================================
 
 int main() {
-    int N, K;
-    cin >> N >> K;
-    vint A(N, -1);
-    rep(i, K) {
-        int a, b;
-        cin >> a >> b;
-        a--;
-        A[a] = b;
+    int n, p[N + 1], m[N + 1][N + 1];
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        cin >> p[i - 1] >> p[i];
     }
 
-    vector dp(N + 1, vector(4, vector(4, 0)));
-    dp[0][0][0] = 1;
-    rep(i, N) rep(j, 4) rep(k, 4) {
-        if (dp[i][j][k] == 0) continue;
-        rep2(l, 1, 4) {
-            if (l == j && l == k) continue;
-            if (A[i] != -1 && A[i] != l) continue;
-            dp[i + 1][l][j] = (dp[i + 1][l][j] + dp[i][j][k]) % 10000;
+    for (int i = 1; i <= n; i++) m[i][i] = 0;
+    for (int l = 2; l <= n; l++) {
+        for (int i = 1; i <= n - l + 1; i++) {
+            int j = i + l - 1;
+            m[i][j] = (1 << 21);
+            for (int k = i; k <= j - 1; k++) {
+                m[i][j] = min(m[i][j], m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j]);
+            }
         }
     }
-
-    ll res = 0;
-    rep2(j, 1, 4) rep2(k, 1, 4) res = (res + dp[N][j][k]) % 10000;
-    cout << res << endl;
+    cout << m[1][n] << endl;
     return 0;
 }
 
-// mycode wa
+// mycode WA
 // int main() {
-//     int N, K;
-//     cin >> N >> K;
-//     map<int, int> A;
-//     rep(i, K) {
-//         int a, b;
-//         b--;
-//         cin >> a >> b;
-//         A.insert({a, b});
+//     int N;
+//     cin >> N;
+//     vint R(N), C(N);
+//     rep(i, N) cin >> R[i] >> C[i];
+    
+//     vector dp(N, vint(N));
+//     rep(i, N) {
+//         rrep(j, N) {
+//             if (j < i) cout << dp[j][i - 1] + R[i] * C[i] * C[j] << ' ' << dp[j + 1][i] + R[j] * C[j] * C[i] << endl;
+//             if (j < i) dp[j][i] = min(dp[j][i - 1] + R[j] * R[i] * C[i] ,dp[j + 1][i] + R[j] * C[j] * C[i]);
+//         }
+        
+//         rep(k, N) cout << dp[k] << endl;
 //     }
-
-//     vector<vector<vint>> dp(N + 1, vector<vint>(3, vint(3)));
-//     rep(i, K) dp[0][i][0] = 1;
-//     rep(i, N) {             
-//         if (A.find(i + 1) != A.end()) {
-//             int b = A[i + 1];
-//             rep(j, 2)  {
-//                 dp[i + 1][b][j + 1] += dp[i][b][j];
-//                 dp[i + 1][b][j + 1] %= MOD;
-//             }   
-//             rep(j, 3) {
-//                 if (j == b) continue;
-//                 rep(k, 2) {
-//                     dp[i + 1][j][0] += dp[i][b][k];
-//                     dp[i + 1][j][0] %= MOD;
-//                 }
-//             }   
-//         } else {
-//             rep(j, 3) {
-//                 rep(k, 2) {
-//                     dp[i + 1][j][k + 1] += dp[i][j][k];
-//                     dp[i + 1][j][k + 1] %= MOD;
-//                     rep(l, 3) {
-//                         if (l == k) continue;
-//                         rep(m, 2) {
-//                             dp[i + 1][l][m] += dp[i][j][k];
-//                             dp[i + 1][l][m] %= MOD;
-//                         }
-//                     }
-//                 }
-//             }
-//         } 
-//     }
-
-//     cout << dp[N] << endl;
+//     cout << dp[0][N - 1] << endl;
 //     return 0;
 // }
