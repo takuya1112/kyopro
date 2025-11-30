@@ -13,6 +13,7 @@ struct lazy_segtree {
     int n;
     std::vector<T> data;
     std::vector<F> lazy;
+    std::vector<int> flag;
 
     lazy_segtree(int n_) { init(n_); }
     lazy_segtree(const std::vector<T>& v) { init(v.size()); build(v); }
@@ -22,6 +23,7 @@ struct lazy_segtree {
         while (n < n_) n <<= 1;
         data.assign(2 * n - 1, e());
         lazy.assign(2 * n - 1, id());
+        flag.assign(2 * n - 1, 0);
     }
 
     void build (const std::vector<T>& v) {
@@ -30,15 +32,18 @@ struct lazy_segtree {
     }
 
     void push(int k, int l, int r) {
-        if (lazy[k] == id()) return;
+        if (!flag[k]) return;
 
         data[k] = mapping(lazy[k], data[k]);
 
         if (r - l > 1) {
             lazy[2 * k + 1] = composition(lazy[k], lazy[2 * k + 1]);
             lazy[2 * k + 2] = composition(lazy[k], lazy[2 * k + 2]);
+            flag[2 * k + 1] = 1;
+            flag[2 * k + 2] = 1;
         } 
         lazy[k] = id();
+        flag[k] = 0;
     }
 
     void update(int a, int b, F f, int k = 0, int l = 0, int r = -1) {
@@ -48,9 +53,11 @@ struct lazy_segtree {
         if (r <= a || b <= l) return;
         if (a <= l && r <= b) {
             lazy[k] = composition(f, lazy[k]);
+            flag[k] = 1;    
             push(k, l, r);
             return;
         }
+        
         update(a, b, f, k * 2 + 1, l, (l + r) / 2);
         update(a, b, f, k * 2 + 2, (l + r) / 2, r);
         data[k] = op(data[k * 2 + 1], data[k * 2 + 2]);
@@ -58,8 +65,11 @@ struct lazy_segtree {
 
     T query(int a, int b, int k = 0, int l = 0, int r = -1) {
         if (r == -1) r = n;
+        push(k, l, r);
+
         if (r <= a || b <= l) return e();
         if (a <= l && r <= b) return data[k];
+        
         T vl = query(a, b, k * 2 + 1, l, (l + r) / 2);
         T vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
         return op(vl, vr);
