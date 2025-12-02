@@ -1,9 +1,31 @@
+// struct T { long long sum; int size; };
+// struct F { long long add; };
 
+// T op(T a, T b) { return T{a.sum + b.sum, a.size + b.size}; }
+// T e() { return T{0, 0}; }
+// T mapping(F a, T b) { return T{b.sum + a.add * b.size, b.size};}
+// F composition(F a, F b) { return F{a.add + b.add}; }
+// F id() {return F{0};}
+
+// lazy_segtree<T, op, e, F, mapping, composition, id> seg(a);　の形で使用し
+// dataを渡された配列で初期化して余分な所をeでlazyの中身を全部id、flagを全部0で初期化する
+// またはlazy_segtree<T, op, e, F, mapping, composition, id> seg(n); の形で使用し
+// dataの中身を全部e、lazyの中身を全部id、flagを全部0で初期化する
+
+// 汎用型なのでいろんな型を使える、
+// op マージ、e 単位元、mapping 遅延作用、composition 遅延の合成、id 遅延の単位元
+// これに合うように型を変えて使用してください
+
+// 完全並行二分木で区間のopをO(log n)で求められる
+// seg.update(a, b, f, k, l, r)で半開区間[a, b)にｆを足したり代入したりする
+// seg.query(a, b, k, l, r) で半開区間[a, b)のopを返す
+// kは節点番号、l, rはその節点が[l, r) に対応してるのを示す((a, b)だけ入力すればいい)
 
 #pragma once
 #include <vector>
+#include <climits>
 #include <algorithm>
-#include <iostream>
+#include <numeric>
 
 template <
     class T, T (*op)(T, T), T (*e)(),

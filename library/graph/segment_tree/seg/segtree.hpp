@@ -11,8 +11,8 @@
 // eは初期値でINF, -INF, 0などopの邪魔にならないやつを使う
 
 // 完全並行二分木で区間のopをO(log n)で求められる
-// seg.set(k, a) でidx ｋの要素をaに変える
-// seg.query(a, b, k, l, r) で半開区間[a, b)の最小値を返す
+// seg.set(k, a) でidx ｋの要素をaに変えたり代入したりする
+// seg.query(a, b, k, l, r) で半開区間[a, b)のopを返す
 // kは節点番号、l, rはその節点が[l, r) に対応してるのを示す((a, b)だけ入力すればいい)
 
 #pragma once
