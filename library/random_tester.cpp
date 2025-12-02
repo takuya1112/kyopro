@@ -41,10 +41,12 @@ struct RandomTester {
                 cout << "WA FOUNDED!\n";
                 cout << "======input======\n";
                 printer_input(input);
+                cout << "=====output======\n";
                 cout << "Main: ";
                 printer_output(out_main);
                 cout << "Naive: ";
                 printer_output(out_naive);
+                cout << "================\n";
                 return;
             }
         }

@@ -6,16 +6,17 @@
 #pragma once
 #include <vector>
 
+template<class T>
 struct fenwick_tree {
     int N;
-    std::vector<long long> bit;
+    std::vector<T> bit;
 
     fenwick_tree(int n) {
         N = n;
         bit.assign(N + 1, 0);
     }
 
-    void add(int i, long long x) {
+    void add(int i, T x) {
         i += 1;
         while (i <= N) {
             bit[i] += x;
@@ -23,8 +24,8 @@ struct fenwick_tree {
         }
     }
 
-    long long sum(int i) {
-        long long s = 0;
+    T sum(int i) {
+        T s = 0;
         while (i > 0) {
             s += bit[i];
             i -= i & -i;
@@ -32,7 +33,7 @@ struct fenwick_tree {
         return s;
     }
 
-    long long sum(int l, int r) {
+    T sum(int l, int r) {
         return sum(r) - sum(l);
     }
 };
