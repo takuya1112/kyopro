@@ -35,12 +35,12 @@ struct RandomTester {
             else out = solver_naive(in);
         } catch (const exception& e) {
             ok = false;
-            cout << "[ERROR] " << name << " solver crashed\n";
-            cout << "std exception: " << e.what() << "\n";
+            cerr << "[ERROR] " << name << " solver crashed\n";
+            cerr << "std exception: " << e.what() << "\n";
         } catch (...) {
             ok = false;
-            cout << "[ERROR] " << name << " solver crashed\n";
-            cout << "unknown exception\n";
+            cerr << "[ERROR] " << name << " solver crashed\n";
+            cerr << "unknown exception\n";
         }
     }
      
@@ -48,7 +48,7 @@ struct RandomTester {
     void debug_one() {
         Input in = generator();
         cout << "====== DEBUG  INPUT =====\n";
-        print_in(in);
+        printer_input(in);
     }
 
     void run(int iterations = 100000) {

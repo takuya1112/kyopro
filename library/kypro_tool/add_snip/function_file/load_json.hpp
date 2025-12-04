@@ -14,8 +14,8 @@ json load_json(const string& path) {
     try {
         ifs >> data;
     } catch(json::parse_error& e) {
-        cout << "JSONの読み込みに失敗しました\n";
-        cout << e.what() << '\n';
+        cerr << "JSONの読み込みに失敗しました\n";
+        cerr << e.what() << '\n';
         return json{};
     }
     return data;
