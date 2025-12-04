@@ -1,0 +1,199 @@
+#pragma once
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Edge { int u, v, w; };
+
+struct RandomGen {
+    // ランダム生成
+    mt19937_64 rng;
+    RandomGen() : rng(chrono::steady_clock::now().time_since_epoch().count()) {}
+
+    // 基本
+    long long rll(long long l, long long r) {
+        uniform_int_distribution<long long> dist(l, r);
+        return dist(rng);
+    }
+
+    int ri(int l, int r) {
+        return (int)rll(l, r);
+    }
+
+    // 配列生成
+    vector<long long> random_arrayll(int n, long long l, long long r) {
+        vector<long long> v(n);
+        for (auto& x : v) x = rll(l, r);
+        return v;
+    }
+
+    vector<int> random_array(int n, int l, int r) {
+        vector<int> v(n);
+        for (auto& x : v) x = ri(l, r);
+        return v;
+    }
+
+    vector<int> random_perm(int n) {
+        vector<int> v(n);
+        iota(v.begin(), v.end(), 1);
+        shuffle(v.begin(), v.end(), rng);
+        return v;
+    }
+
+    // ランダム文字列
+    string random_string(int n, string chars = "abcdefghijklmnopqrstuvwxyz") {
+        string s;
+        for (int i = 0; i < n; i++) {
+            s += chars[ri(0, chars.size() - 1)];
+        }
+        return s;
+    }
+
+    // ランダムペア 
+    pair<int, int> random_pair_int(int l, int r) {
+        int a = ri(l, r);
+        int b = ri(l, r);
+        return {a, b};
+    }
+
+    // ランダムグラフ
+    vector<pair<int, int>> random_graph(int n, int m) {
+        set<pair<int, int>> st;
+        while (st.size() < m) {
+            int u = ri(0, n-1);
+            int v = ri(0, n-1);
+
+            if (u == v) continue;
+            if (u > v) swap(u, v);
+            st.insert({u, v});
+        }
+        return vector<pair<int, int>> (st.begin(), st.end());
+    }
+
+    vector<pair<int, int>> random_directed_graph(int n, int m) {
+        set<pair<int, int>> st;
+        while (st.size() < m) {
+            int u = ri(0, n-1);
+            int v = ri(0, n-1);
+
+            if (u == v) continue;
+            st.insert({u, v});
+        }
+        return vector<pair<int, int>> (st.begin(), st.end());
+    }
+
+    // ランダムDAG(有行非巡回グラフ)
+    vector<pair<int, int>> random_dag(int n, int m) {
+        vector<int> order(n);
+        iota(order.begin(), order.end(), 0);
+        shuffle(order.begin(), order.end(), rng);
+
+        set<pair<int, int>> st;
+        while (st.size() < m) {
+            int i = ri(0, n-1);
+            int j = ri(0, n-1);
+            if (i == j) continue;
+            if (i > j) swap(i, j);
+
+            int u = order[i];
+            int v = order[j];
+            st.insert({u, v});
+        }
+        return vector<pair<int, int>> (st.begin(), st.end());
+    }
+
+    vector<Edge> random_weighted_dag(int n, int m, int low, int high) {
+        vector<int> order(n);
+        iota(order.begin(), order.end(), 0);
+        shuffle(order.begin(), order.end(), rng);
+
+        vector<Edge> e;
+        set<pair<int, int>> st;
+        while (st.size() < m) {
+            int i = ri(0, n-1);
+            int j = ri(0, n-1);
+            if (i == j) continue;
+            if (i > j) swap(i, j);
+
+            int u = order[i];
+            int v = order[j];
+            if (st.count({u, v})) continue;
+            
+            int w = ri(low, high);
+            st.insert({u, v});
+            e.push_back({u, v, w});
+        }
+        return e;
+    }
+
+    // ランダム木
+    vector<pair<int, int>> random_tree(int n) {
+        vector<pair<int, int>> e;
+        for (int i = 1; i < n; i++) {
+            int p = ri(0, i-1);
+            e.push_back({p, i}); 
+        }
+        shuffle(e.begin(), e.end(), rng);
+        return e;
+    }
+
+    vector<Edge> random_weighted_tree(int n, int low, int high) {
+        vector<Edge> e;
+        for (int i = 1; i < n; i++) {
+            int p = ri(0, i-1);
+            int w = ri(low, high);
+            e.push_back({p, i, w});
+        }
+        shuffle(e.begin(), e.end(), rng);
+        return e;
+    }
+
+    // ランダム重み付きグラフ
+    vector<Edge> random_weighted_graph(int n, int m, int low, int high) {
+        vector<Edge> e;
+        set<pair<int, int>> used;
+        while (used.size() < m) {
+            int u = ri(0, n-1);
+            int v = ri(0, n-1);
+            if (u > v) swap(u, v);
+            if (u == v || used.count({u, v})) continue;
+            int w = ri(low, high);
+            used.insert({u, v});
+            e.push_back({u, v, w});
+        }
+        return e;
+    }
+
+    vector<Edge> random_weighted_directed_graph(int n, int m, int low, int high) {
+        vector<Edge> e;
+        set<pair<int, int>> used;
+        while (used.size() < m) {
+            int u = ri(0, n-1);
+            int v = ri(0, n-1);
+            if (u == v || used.count({u, v})) continue;
+            int w = ri(low, high);
+            used.insert({u, v});
+            e.push_back({u, v, w});
+        }
+        return e;
+    }
+
+    // ランダムグリッド(迷路)
+    vector<vector<int>> random_grid_n(int h, int w, double block_prob = 0.3) {
+        vector<vector<int>> g(h, vector<int> (w, 0));
+        bernoulli_distribution dist(block_prob);
+        for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) {
+            if (dist(rng)) g[i][j] = 1;
+        }
+        return g;
+    }
+
+    vector<string> random_gird_s(int h, int w, double block_prob = 0.3) {
+        string dots(w, '.');
+        vector<string> g(h, dots);
+        bernoulli_distribution dist(block_prob);
+        for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) {
+            if (dist(rng)) g[i][j] = '#';
+        }
+        return g;
+    }
+};

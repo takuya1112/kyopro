@@ -2,25 +2,22 @@
 using namespace std;
 #include <atcoder/all>
 using namespace atcoder;
+#include "random_gen.hpp"
 
 // ======================================================
 //                  FRAMEWORK 触らないでOK
 // ===================++++++=============================
 
-mt19937 rng(random_device{}());
+RandomGen gen;
 
-template<typename T>
-T random_long (T a, T b) {
-    return uniform_int_distribution<T>(a, b)(rng);
-}
-
-template<typename InputType, typename OutputType>
+template<typename Input, typename Output>
 struct RandomTester {
 
-    using GenType = std::function<InputType()>;
-    using FuncType = std::function<OutputType(const InputType&)> ;
-    using PrinterTypeI = std::function<void(const InputType&)>;
-    using PrinterTypeO = std::function<void(const OutputType&)>;
+    using GenType = std::function<Input()>;
+    using FuncType = std::function<Output(const Input&)> ;
+    using PrinterTypeI = std::function<void(const Input&)>;
+    using PrinterTypeO = std::function<void(const Output&)>;
+    using Compare = std::function<bool(const Output&, const Output&)>;
     
     GenType generator;
 
@@ -30,27 +27,54 @@ struct RandomTester {
     PrinterTypeI printer_input;
     PrinterTypeO printer_output;
 
+    Compare comparater = [](const Output& a, const Output& b) { return a == b; };
+
+    void check_error(Output& out, bool& ok, const Input& in, const string& name) {
+        try {
+            if (name == "main") out = solver_main(in);
+            else out = solver_naive(in);
+        } catch (const exception& e) {
+            ok = false;
+            cout << "[ERROR] " << name << " solver crashed\n";
+            cout << "std exception: " << e.what() << "\n";
+        } catch (...) {
+            ok = false;
+            cout << "[ERROR] " << name << " solver crashed\n";
+            cout << "unknown exception\n";
+        }
+    }
+     
+    //　出力のデバッグ用
+    void debug_one() {
+        Input in = generator();
+        cout << "====== DEBUG  INPUT =====\n";
+        print_in(in);
+    }
+
     void run(int iterations = 100000) {
         for (int i = 0; i < iterations; i++) {
-            InputType input = generator();
+            Input in = generator();
+            Output out_main, out_naive;
+            bool main_ok = true, naive_ok = true;
 
-            OutputType out_main = solver_main(input);
-            OutputType out_naive = solver_naive(input);
+            check_error(out_main, main_ok, in, "main");
+            check_error(out_naive, naive_ok, in, "naive");
 
-            if (out_main != out_naive) {
-                cout << "WA FOUNDED!\n";
-                cout << "======input======\n";
-                printer_input(input);
-                cout << "=====output======\n";
-                cout << "Main: ";
+            if (!main_ok || !naive_ok || !comparater(out_main, out_naive)) {
+                cout << "======= WA FOUNDED! =======\n";
+                cout << "[INPUT]\n";
+                printer_input(in);
+
+                cout << "[MAIN OUTPUT]\n";
                 printer_output(out_main);
-                cout << "Naive: ";
+
+                cout << "[NAIVE OUTPUT]\n";
                 printer_output(out_naive);
-                cout << "================\n";
+                cout << "==========================\n";
                 return;
             }
         }
-        cout << "All Tests Passed!\n";
+        cout << "All TESTS PASSED!\n";
     }
 };
 
@@ -71,13 +95,13 @@ void print_in(const TestCase& in) {
 // WAの時の出力データを出力する関数
 void print_out(const bool& out) {
     if (out) cout << 1 << endl;
-    cout << 0 << endl;
+    else cout << 0 << endl;
 }
 
 // 入力データのランダム生成する関数
 TestCase random_case() {
     TestCase in;
-    in.n = random_long(1, 100);
+    in.n = gen.ri(0, 20);
     return in;
 }
 
