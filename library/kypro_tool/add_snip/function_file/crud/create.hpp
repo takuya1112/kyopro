@@ -22,14 +22,14 @@ void save_snippet(const string& name, const string& prefix, const string& body, 
 
     string line;
 
-    while (getline(ss, line, '\n')) {
+    while (getline(ss, line)) {
         body_lines.push_back(line);
     }
 
     snippet[name] = json::object();
     snippet[name]["prefix"] = prefix;
     snippet[name]["body"] = body_lines;
-    if (description != "") snippet[name]["description"] = description;
+    if (!description.empty()) snippet[name]["description"] = description;
 
     ofstream ofs(path);
     ofs << snippet.dump(4);

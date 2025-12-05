@@ -94,6 +94,7 @@
         "variant": "cpp",
         "all": "cpp",
         "queue": "cpp",
-        "segtree": "cpp"
+        "segtree": "cpp",
+        "filesystem": "cpp"
     }
 }
