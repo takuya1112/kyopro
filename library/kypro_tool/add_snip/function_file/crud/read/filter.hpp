@@ -19,24 +19,21 @@ FilterType no_filter() {
 
 FilterType name_filter(const string& key) {
     return [key](const string& name, const json& snip) -> bool {
-        if (key.empty()) return true;
         return name.find(key) != string::npos;
     };
 }
 
 FilterType prefix_filter(const string& key) {
     return [key](const string& name, const json& snip) -> bool {
-        if (key.empty()) return true;
         if (!snip.contains("prefix")) return false;
         return snip["prefix"].get<string>().find(key) != string::npos;
     };
 }
 
 FilterType tags_filter(const vector<string>& key) {
-    return [key](const string& name, const json& snip) -> bool {
-        if (!key.size()) return true;
+    unordered_set<string> tags(key.begin(), key.end());
+    return [tags](const string& name, const json& snip) -> bool {
         if (!snip.contains("tags")) return false;
-        unordered_set<string> tags(key.begin(), key.end());
         for (auto& t : snip["tags"]) {
             if (tags.count(t.get<string>())) return true;
         }
@@ -60,4 +57,12 @@ FilterType filter_or(const vector<FilterType>& fs) {
         }
         return false;
     };
+}
+
+vector<FilterType> build(const string& name, const string& prefix, const vector<string>& tags) {
+    vector<FilterType> fs;
+    if (!name.empty()) fs.push_back(name_filter(name));
+    if (!prefix.empty()) fs.push_back(prefix_filter(prefix));
+    if (!tags.empty()) fs.push_back(tags_filter(tags));
+    return fs;
 }
