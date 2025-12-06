@@ -2,13 +2,12 @@
 using namespace std;
 #include <atcoder/all>
 using namespace atcoder;
-#include "random_gen.hpp"
+#include "all.hpp"
 
 // ======================================================
 //                  FRAMEWORK 触らないでOK
 // ===================++++++=============================
 
-RandomGen gen;
 
 template<typename Input, typename Output>
 struct RandomTester {
@@ -78,64 +77,6 @@ struct RandomTester {
     }
 };
 
-// ======================================================
-//          問題に合わせてそれぞれの型を変える
-// ======================================================
-
-// 入力データの型を定義する
-struct TestCase {
-    int n;
-};
-
-// WAの時の入力データを出力する関数
-void print_in(const TestCase& in) {
-    cout << in.n << endl;
-}
-
-// WAの時の出力データを出力する関数
-void print_out(const bool& out) {
-    if (out) cout << 1 << endl;
-    else cout << 0 << endl;
-}
-
-// 入力データのランダム生成する関数
-TestCase random_case() {
-    TestCase in;
-    in.n = gen.ri(0, 20);
-    return in;
-}
-
-// ナイーブ(愚直解法)のコード
-bool is_prime(long long n) {
-    if (n <= 1) return false;
-    for (long long i = 2; i * i <= n; i++) {
-        if (n % i == 0) return false;
-    }
-    return true;
-}
-
-bool naive(const TestCase &tc) {
-    return is_prime(tc.n); 
-}
-
-// 試したいコード
-std::vector<int> sieve(int n) {
-    std::vector<int> is_prime(n + 1, 1);
-    is_prime[0] = is_prime[1] = 0;
-
-    for (int i = 2; i * i <= n; i++) {
-        if (!is_prime[i]) continue;
-        for (int j = i * i; j <= n; j += i) {
-            is_prime[j] = 0;
-        }
-    }
-    return is_prime;
-} 
-
-bool fast(const TestCase &tc) {
-    vector<int> a = sieve(tc.n);
-    return a[tc.n];
-}
 
 // ======================================================
 // 　　　　　　　     MAIN
