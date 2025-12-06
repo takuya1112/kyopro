@@ -8,13 +8,15 @@ using json = nlohmann::json;
 using namespace std;
 
 struct Filter_Sorter {
-    using FilterType =  function<bool(const string&, const json&)>;
+    using FilterType = function<bool(const string&, const json&)>;
     using SorterType = function<bool(const pair<string, json>&, const pair<string, json>&)>;
 
     FilterType filter;
     SorterType sorter;
 
-    vector<pair<string, json>> make_newdata(const json& data) {
+    Filter_Sorter(FilterType f, SorterType s) : filter(f), sorter(s){}
+    
+    vector<pair<string, json>> make_new_data(const json& data) {
         vector<pair<string, json>> results;
 
         for (auto& [name, snip] : data.items()) {
@@ -28,23 +30,30 @@ struct Filter_Sorter {
         return results;
     }
 
-    void print_data(const json& data, const bool& full) {
-        vector<pair<string, json>> new_data = make_newdata(data);
-        for (auto& [name, snip] : new_data) {
+    void print_one(const string& name, const json& snip, bool full) const {
         cout << "name: " << name << "\n";
-        cout << "prefix: " << snip["prefix"].get<string>() << "\n";
+        cout << "prefix: " << snip.value("prefix", "") << "\n";
         if (full) {
-            if (snip.contains("description") && !snip["description"].empty()) {
-                cout << "description: " << snip["description"].get<string>() << "\n";
-            } 
-
-            if (snip.contains("tags") && !snip["tags"].empty()) {
+            string desc = snip.value("description", "");
+            if (!desc.empty()) {
+                cout << "description: " << desc << "\n";
+            }
+            
+            json tags = snip.value("tags", json::array());
+            if (tags.is_array() && !tags.empty()) {
                 cout << "tags: ";
-                for (auto& t : snip["tags"].get<vector<string>>()) cout << t << " ";
+                for (auto& t : tags) cout << t.get<string>() << " ";
                 cout << "\n";
             }
         }
-        cout << "----------------------------\n";
+        cout << "============================\n";
     }
+
+    void print_data(const json& data, bool full) {
+        cout << "========= 結果一覧 =========\n";
+        vector<pair<string, json>> new_data = make_new_data(data);
+        for (auto& [name, snip] : new_data) {
+            print_one(name, snip, full);
+        }
     }
 };

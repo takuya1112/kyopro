@@ -28,6 +28,9 @@ struct RandomTester {
 
     Compare comparater = [](const Output& a, const Output& b) { return a == b; };
 
+    RandomTester(GenType gen, FuncType main, FuncType naive, PrinterTypeI in, PrinterTypeO out) 
+    : generator(gen), solver_main(main), solver_naive(naive), printer_input(in), printer_output(out) {}
+
     void check_error(Output& out, bool& ok, const Input& in, const string& name) {
         try {
             if (name == "main") out = solver_main(in);
@@ -83,12 +86,7 @@ struct RandomTester {
 // ======================================================
 
 int main() {
-    RandomTester<TestCase, bool> tester;
-    tester.generator = random_case;
-    tester.solver_main = fast;
-    tester.solver_naive = naive;
-    tester.printer_input = print_in;
-    tester.printer_output = print_out;
+    RandomTester<TestCase, bool> tester(random_case, fast, naive, print_in, print_out);
     tester.run();
     return 0;
 }

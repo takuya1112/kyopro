@@ -10,16 +10,22 @@ using json = nlohmann::json;
 int main(int argc, char** argv) {
     CLI::App app{"Snippet maker"};
 
-    bool full = false;
+    bool full = false, is_or = false;
     vector<string> tags;
-    string name, new_name, prefix, body, description;
+    string name, new_name, prefix, body, description, sort_key;
 
     auto list = app.add_subcommand("list", "List all snippets");
     list->add_flag("-f, --full", full);
+    list->add_option("-k, --key", sort_key);
 
 
     auto search = app.add_subcommand("search", "Search snippet");
-    search->add_option("-n, --name", name)->required();
+    search->add_option("-n, --name", name);
+    search->add_option("-p, --prefix", prefix);
+    search->add_option("-t, --tags", tags);
+    search->add_option("-k, --key", sort_key);
+    search->add_flag("-f, --full", full);
+    search->add_flag("-o, --or", is_or);
 
 
     auto add_tag = app.add_subcommand("add_tag", "Add tags");
@@ -62,10 +68,17 @@ int main(int argc, char** argv) {
     json data = load_json(path);
 
     if (app.got_subcommand(list)) {
-        list_name(data, full);
+        if (sort_key == "prefix") list_prefix(data, full);
+        else list_name(data, full);
     } 
     else if (app.got_subcommand(search)) {
-        search_snippet(name, data);
+        if (is_or) {
+            if (sort_key == "prefix") search_or_psort(name, prefix, tags, data, full);
+            else search_or_nsort(name, prefix, tags, data, full);
+        } else {
+            if (sort_key == "prefix") search_and_psort(name, prefix, tags, data, full);
+            else search_and_nsort(name, prefix, tags, data, full);
+        }
     } 
     else if (app.got_subcommand(del)) {
         delete_snippet(name, path, data);
