@@ -7,9 +7,9 @@
 using json = nlohmann::json;
 using namespace std;
 
-json filter_sort(const json& data,
-                function<bool(const string&, const json&)> filter, 
-                function<bool(const pair<string, json>&, const pair<string, json>&)> sorter
+vector<pair<string, json>> filter_sort(const json& data,
+                                        function<bool(const string&, const json&)> filter, 
+                                        function<bool(const pair<string, json>&, const pair<string, json>&)> sorter
 ) {
     vector<pair<string, json>> results;
 
@@ -18,7 +18,7 @@ json filter_sort(const json& data,
             results.push_back({name, snip});
         }
     }
-    return results;
+
     sort(results.begin(), results.end(), sorter);
 
     return results;
