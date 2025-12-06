@@ -10,10 +10,12 @@ using json = nlohmann::json;
 int main(int argc, char** argv) {
     CLI::App app{"Snippet maker"};
 
+    bool full = false;
     vector<string> tags;
     string name, new_name, prefix, body, description;
 
     auto list = app.add_subcommand("list", "List all snippets");
+    list->add_flag("-f, --full", full);
 
 
     auto search = app.add_subcommand("search", "Search snippet");
@@ -60,7 +62,7 @@ int main(int argc, char** argv) {
     json data = load_json(path);
 
     if (app.got_subcommand(list)) {
-        show_list(data);
+        list_name(data, full);
     } 
     else if (app.got_subcommand(search)) {
         search_snippet(name, data);
