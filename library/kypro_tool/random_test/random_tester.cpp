@@ -86,7 +86,7 @@ struct RandomTester {
 // ======================================================
 
 int main() {
-    RandomTester<TestCase, bool> tester(random_case, fast, naive, print_in, print_out);
+    RandomTester<TestCase, vector<int>> tester(random_case, fast, naive, print_in, print_out);
     tester.run();
     return 0;
 }

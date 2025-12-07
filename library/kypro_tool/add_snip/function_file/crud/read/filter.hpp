@@ -18,13 +18,13 @@ FilterType no_filter() {
 }
 
 FilterType name_filter(const string& key) {
-    return [key](const string& name, const json& snip) -> bool {
+    return [key = move(key)](const string& name, const json& snip) -> bool {
         return name.find(key) != string::npos;
     };
 }
 
 FilterType prefix_filter(const string& key) {
-    return [key](const string& name, const json& snip) -> bool {
+    return [key = move(key)](const string& name, const json& snip) -> bool {
         if (!snip.contains("prefix")) return false;
         return snip["prefix"].get<string>().find(key) != string::npos;
     };
@@ -32,7 +32,7 @@ FilterType prefix_filter(const string& key) {
 
 FilterType tags_filter(const vector<string>& key) {
     unordered_set<string> tags(key.begin(), key.end());
-    return [tags](const string& name, const json& snip) -> bool {
+    return [tags = move(tags)](const string& name, const json& snip) -> bool {
         if (!snip.contains("tags")) return false;
         for (auto& t : snip["tags"]) {
             if (tags.count(t.get<string>())) return true;
@@ -42,7 +42,8 @@ FilterType tags_filter(const vector<string>& key) {
 }
 
 FilterType filter_and(const vector<FilterType>& fs) {
-    return [fs](const string& name, const json& snip) -> bool {
+    if (fs.empty()) return no_filter();
+    return [fs = move(fs)](const string& name, const json& snip) -> bool {
         for (auto& f : fs) {
             if (!f(name, snip)) return false;
         }
@@ -51,7 +52,8 @@ FilterType filter_and(const vector<FilterType>& fs) {
 }
 
 FilterType filter_or(const vector<FilterType>& fs) {
-    return [fs](const string& name, const json& snip) -> bool {
+    if (fs.empty()) return [](const string& name, const json& snip) { return false; };
+    return [fs = move(fs)](const string& name, const json& snip) -> bool {
         for (auto& f : fs) {
             if (f(name, snip)) return true;
         }
@@ -65,4 +67,14 @@ vector<FilterType> build(const string& name, const string& prefix, const vector<
     if (!prefix.empty()) fs.push_back(prefix_filter(prefix));
     if (!tags.empty()) fs.push_back(tags_filter(tags));
     return fs;
+}
+
+FilterType build_or(const string& name, const string& prefix, const vector<string>& tags) {
+    auto fs = build(name, prefix, tags);
+    return filter_or(fs);
+}
+
+FilterType build_and(const string& name, const string& prefix, const vector<string>& tags) {
+    auto fs = build(name, prefix, tags);
+    return filter_and(fs);
 }

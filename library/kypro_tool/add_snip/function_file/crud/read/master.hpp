@@ -42,7 +42,10 @@ struct Filter_Sorter {
             json tags = snip.value("tags", json::array());
             if (tags.is_array() && !tags.empty()) {
                 cout << "tags: ";
-                for (auto& t : tags) cout << t.get<string>() << " ";
+                for (int i = 0; i < tags.size(); i++) {
+                    if (i) cout << ", ";
+                    cout << tags[i].get<string>();
+                }
                 cout << "\n";
             }
         }

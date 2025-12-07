@@ -45,6 +45,7 @@ void edit_snippet(const string& name, const filesystem::path& path, json& data) 
     string old_body = "";
     for (const auto& line : snippet["body"]) old_body += line.get<string>() + '\n';
     string old_description = snippet.value("description", "");
+    json tags = snippet.value("tags", json::array());
 
     string prefix, description;
 
@@ -76,6 +77,7 @@ void edit_snippet(const string& name, const filesystem::path& path, json& data) 
     new_snippet["prefix"] = prefix;
     new_snippet["body"] = body_lines;
     if (!description.empty()) new_snippet["description"] = description;
+    if (!tags.empty()) new_snippet["tags"] = tags;
 
     data[name] = new_snippet;
 

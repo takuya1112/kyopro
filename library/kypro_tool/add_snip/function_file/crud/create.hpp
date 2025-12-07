@@ -21,12 +21,10 @@ void save_snippet(const string& name, const string& prefix, const string& body, 
     vector<string> body_lines;
 
     ifstream ifs(body);
-    stringstream ss;
-    ss << ifs.rdbuf();
 
     string line;
 
-    while (getline(ss, line)) {
+    while (getline(ifs, line)) {
         body_lines.push_back(line);
     }
 

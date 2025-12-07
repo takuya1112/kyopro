@@ -8,14 +8,15 @@ using namespace atcoder;
 #include "data.hpp"
 
 
-bool is_prime(long long n) {
-    if (n <= 1) return false;
-    for (long long i = 2; i * i <= n; i++) {
-        if (n % i == 0) return false;
+vector<int> naive(const TestCase &tc) {
+    int N = tc.n, Q = tc.q;
+    vector<int> v = tc.v;
+    vector<int> query = tc.queries;
+    
+    vector<int> ans;
+    for (int i = 0; i < Q; i++) {
+        int it = upper_bound(v.begin(), v.end(), query[i]) - v.begin();
+        ans.push_back(v[it]);
     }
-    return true;
-}
-
-bool naive(const TestCase &tc) {
-    return is_prime(tc.n); 
+    return ans;
 }

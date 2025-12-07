@@ -8,20 +8,26 @@ using namespace atcoder;
 #include "data.hpp"
 
 
-std::vector<int> sieve(int n) {
-    std::vector<int> is_prime(n + 1, 1);
-    is_prime[0] = is_prime[1] = 0;
-
-    for (int i = 2; i * i <= n; i++) {
-        if (!is_prime[i]) continue;
-        for (int j = i * i; j <= n; j += i) {
-            is_prime[j] = 0;
-        }
+template<class T>
+int upper_bound_idx(const std::vector<T>& a, T x) {
+    int left = -1, right = (int)a.size();
+    while (abs(right - left) > 1) {
+        int mid = (left + right) / 2;
+        if (a[mid] <= x) left = mid;
+        else right = mid;
     }
-    return is_prime;
-} 
+    return right;
+}
 
-bool fast(const TestCase &tc) {
-    vector<int> a = sieve(tc.n);
-    return a[tc.n];
+
+vector<int> fast(const TestCase &tc) {
+    int N = tc.n, Q = tc.q;
+    vector<int> v = tc.v;
+    vector<int> query = tc.queries;
+
+    vector<int> ans;
+    for (int qi = 0; qi < Q; qi++) {
+        ans.push_back(v[upper_bound_idx(v, query[qi])]);
+    }
+    return ans;
 }

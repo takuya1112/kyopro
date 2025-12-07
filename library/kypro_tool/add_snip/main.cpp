@@ -38,6 +38,9 @@ int main(int argc, char** argv) {
     remove_tag->add_option("-t, --tag", tags)->required()->expected(1, -1);
 
 
+    auto count_tags = app.add_subcommand("cnt_tag", "Count tags");
+
+
     auto del = app.add_subcommand("del", "Delete a snippet");
     del->add_option("-n, --name", name)->required();
 
@@ -88,6 +91,9 @@ int main(int argc, char** argv) {
     }
     else if (app.got_subcommand(remove_tag)) {
         remove_tags(name, tags, path, data);
+    }
+    else if (app.got_subcommand(count_tags)) {
+        count_tag(data);
     }
     else if (app.got_subcommand(rename)) {
         rename_snippet(name, new_name, path, data);

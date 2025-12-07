@@ -4,11 +4,12 @@
 
 #pragma once
 #include <vector>
+#include <cmath>
 
 template<class T>
 int lower_bound_idx(const std::vector<T>& a, T x) {
-    int left = 0, right = a.size();
-    while (right - left > 1) {
+    int left = -1, right = (int)a.size();
+    while (abs(right - left) > 1) {
         int mid = (left + right) / 2;
         if (a[mid] < x) left = mid;
         else right = mid;

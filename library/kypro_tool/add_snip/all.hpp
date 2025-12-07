@@ -7,6 +7,7 @@
 #include "function_file/crud/delete.hpp"
 #include "function_file/tag/tag.hpp"
 #include "function_file/tag/rm_tag.hpp"
+#include "function_file/tag/count_tag.hpp"
 #include "function_file/sync/sync.hpp"
 #include "function_file/path.hpp"
 #include "function_file/load_json.hpp"
