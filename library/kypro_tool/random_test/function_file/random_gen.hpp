@@ -183,7 +183,8 @@ struct RandomGen {
     }
 
     // ランダム重み付きグラフ
-    vector<Edge> random_weighted_graph(int n, int m, int low, int high) {
+    vector<Edge> random_weighted_graph(const int& n, int& m, const int& low, const int& high) {
+        if (m > n * (n - 1) / 2) m = n * (n - 1) / 2;
         vector<Edge> e;
         set<pair<int, int>> used;
         while (used.size() < m) {
@@ -198,7 +199,8 @@ struct RandomGen {
         return e;
     }
 
-    vector<Edge> random_weighted_directed_graph(int n, int m, int low, int high) {
+    vector<Edge> random_weighted_directed_graph(const int& n, int& m, const int& low, const int& high) {
+        if (m > n * (n - 1)) m = n * (n - 1);
         vector<Edge> e;
         set<pair<int, int>> used;
         while (used.size() < m) {
@@ -213,7 +215,7 @@ struct RandomGen {
     }
 
     // ランダムグリッド(迷路)
-    vector<vector<int>> random_grid_n(int h, int w, double block_prob = 0.3) {
+    vector<vector<int>> random_grid_n(const int& h, const int& w, double block_prob = 0.3) {
         vector<vector<int>> g(h, vector<int> (w, 0));
         bernoulli_distribution dist(block_prob);
         for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) {
@@ -222,13 +224,14 @@ struct RandomGen {
         return g;
     }
 
-    vector<string> random_gird_s(int h, int w, double block_prob = 0.3) {
+    vector<string> random_gird_s(const int& h, const int& w, double block_prob = 0.3) {
         string dots(w, '.');
         vector<string> g(h, dots);
         bernoulli_distribution dist(block_prob);
         for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) {
             if (dist(rng)) g[i][j] = '#';
         }
+        g[0][0] = '.';
         return g;
     }
 };

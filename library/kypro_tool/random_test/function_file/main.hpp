@@ -5,52 +5,38 @@
 using namespace std;
 #include "data.hpp"
 
-struct mydsu {
-    std::vector<int> parent, rank;
+std::vector<std::vector<int>> bfs4(int sx, int sy, const std::vector<std::string>& grid) {
+    int H = grid.size();
+    int W = grid[0].size();
 
-    mydsu(int n) : parent(n), rank(n, 0) {
-        for (int i = 0; i < n; i++) parent[i] = i;
-    }
+    const int dx[4] = {1, 0, -1, 0};
+    const int dy[4] = {0, 1, 0, -1};
 
-    int find(int x) {
-        if (parent[x] == x) return x;
-        else return parent[x] = find(parent[x]);
-    }
+    std::queue<std::pair<int, int>> que;
+    que.push({sx, sy});
 
-    void unite(int x, int y) {
-        x = find(x); 
-        y = find(y);
-        if (x == y) return;
+    std::vector<std::vector<int>> dist(H, std::vector<int> (W, -1));
+    dist[sx][sy] = 0;
 
-        if (rank[x] < rank[y]) {
-            parent[x] = y;
-        } else {
-            parent[y] = x;
-            if (rank[x] == rank[y]) rank[x]++;
+    while(!que.empty()) {
+        auto [x, y] = que.front();
+        que.pop();
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx < 0 || nx >= H || ny < 0 || ny >= W) continue;
+            if (grid[nx][ny] == '#') continue;
+            if (dist[nx][ny] != -1) continue;
+            dist[nx][ny] = dist[x][y] + 1;
+            que.push({nx, ny});
         }
     }
-
-    bool same(int x, int y) {
-        return find(x) == find(y);
-    }
-};
-
-long long kruskal(int n, std::vector<Edge>& edges) {
-    std::sort(edges.begin(), edges.end(), [] (const Edge& e1, const Edge& e2) {return e1.w < e2.w;} );
-    mydsu uf(n);
-    long long res = 0;
-
-    for (auto& e : edges) {
-        if (!uf.same(e.u, e.v)) {
-            uf.unite(e.u, e.v);
-            res += e.w;
-        }
-    }
-    return res;
+    return dist;
 }
 
 
-long long fast(const TestCase &tc) {
-    vector<Edge> e = tc.edges;
-    return kruskal(tc.n, e);
+int fast(const TestCase &tc) {
+    int H = tc.h, W = tc.w;
+    vector<vector<int>> grid = bfs4(0, 0, tc.grid);
+    return grid[H - 1][W - 1];
 }

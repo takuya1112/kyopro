@@ -7,54 +7,38 @@ using namespace std;
 using namespace atcoder;
 #include "data.hpp"
 
+int H, W, best;
+vector<string> grid;
+vector<vector<bool>> used;
 
-template <class T>
-long long prim(const std::vector<std::vector<std::pair<int, T>>>& graph) {
-    const long long INF = 4e18;
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
 
-    int N = graph.size();
-    std::vector<int> used(N, 0);
-
-    int cnt = 0;
-    long long res = 0;
-
-    std::priority_queue<
-        std::pair<long long, int>, 
-        std::vector<std::pair<long long, int>>,
-        std::greater<std::pair<long long, int>>
-    > pq;
-
-    for (auto [v, c] : graph[0]) pq.push({c, v});
-    used[0] = 1;
-    cnt++;
-
-    while (cnt < N) {
-        auto [c, v] = pq.top();
-        pq.pop();
-
-        if (used[v]) continue;
-
-        used[v] = 1;
-        cnt++;
-        res += c;
-
-        for (auto [u, d] : graph[v]) {
-            if (used[u]) continue;
-            pq.push({d, u});
-        } 
+void dfs(int sx, int sy, int gx, int gy, int d) {
+    if (d >= best) return;
+    if (sx == gx && sy == gy) {
+        best = min(best, d);
+        return;
     }
-    return res;
+
+    used[sx][sy] = true;
+    for (int i = 0; i < 4; i++) {
+        int x = sx + dx[i];
+        int y = sy + dy[i];
+        if (x < 0 || x >= H || y < 0 || y >= W) continue;
+        if (grid[x][y] == '#') continue;
+        if (used[x][y]) continue;
+        dfs(x, y, gx, gy, d + 1);
+    } 
+    used[sx][sy] = false;
 }
 
-long long naive(const TestCase &tc) {
-    int N = tc.n, M = tc.m;
-    vector<Edge> edges = tc.edges;
-
-    vector<vector<pair<int, long long>>> graph(N);
-    for (int i = 0; i < M; i++) {
-        Edge e = edges[i];
-        graph[e.u].push_back({e.v, e.w});
-        graph[e.v].push_back({e.u, e.w});
-    }
-    return prim(graph);
+int naive(const TestCase &tc) {
+    H = tc.h, W = tc.w;
+    grid = tc.grid;
+    best = 1e9;
+    used.assign(H, vector<bool> (W, false));
+    dfs(0, 0, H - 1, W - 1, 0);
+    if (best == 1e9) return -1;
+    else return best;
 }

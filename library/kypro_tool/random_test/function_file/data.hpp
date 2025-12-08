@@ -6,17 +6,20 @@ using namespace std;
 // 入力データの型を定義する
 
 struct TestCase {
-    int n, m;
-    vector<Edge> edges;
+    int h, w;
+    vector<string> grid;
 };
 
 // WAの時の入力データを出力する関数
 void print_in(const TestCase& in) {
-    cout << in.n << " " << in.m << endl;
+    cout << in.h << " " << in.w << endl;
+    for (int i = 0; i < in.h; i++) {
+        cout << in.grid[i] << endl;
+    }
 }
 
 // WAの時の出力データを出力する関数
-void print_out(const long long& out) {
+void print_out(const int& out) {
     cout << out << endl;
 }
 
@@ -24,8 +27,8 @@ void print_out(const long long& out) {
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.n = gen.ri(1, 20);
-    in.m = gen.ri(in.n, in.n * 2);
-    in.edges = gen.random_mst(in.n, in.m, 1, 100);
+    in.h = gen.ri(2, 10);
+    in.w = gen.ri(2, 10);
+    in.grid = gen.random_gird_s(in.h, in.w);
     return in;
 }
