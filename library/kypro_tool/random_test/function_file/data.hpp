@@ -24,8 +24,8 @@ void print_out(const long long& out) {
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.n = gen.ri(500, 1000);
-    in.m = in.n - 1;
+    in.n = gen.ri(1, 20);
+    in.m = gen.ri(in.n, in.n * 2);
     in.edges = gen.random_mst(in.n, in.m, 1, 100);
     return in;
 }

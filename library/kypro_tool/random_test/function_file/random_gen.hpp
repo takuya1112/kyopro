@@ -14,29 +14,29 @@ struct RandomGen {
     RandomGen() : rng(chrono::steady_clock::now().time_since_epoch().count()) {}
 
     // 基本
-    long long rll(long long l, long long r) {
+    long long rll(const long long& l, const long long& r) {
         uniform_int_distribution<long long> dist(l, r);
         return dist(rng);
     }
 
-    int ri(int l, int r) {
+    int ri(const int& l, const int& r) {
         return (int)rll(l, r);
     }
 
     // 配列生成
-    vector<long long> random_arrayll(int n, long long l, long long r) {
+    vector<long long> random_arrayll(const int& n, const long long& l, const long long& r) {
         vector<long long> v(n);
         for (auto& x : v) x = rll(l, r);
         return v;
     }
 
-    vector<int> random_array(int n, int l, int r) {
+    vector<int> random_array(const int& n, const int& l, const int& r) {
         vector<int> v(n);
         for (auto& x : v) x = ri(l, r);
         return v;
     }
 
-    vector<int> random_perm(int n) {
+    vector<int> random_perm(const int& n) {
         vector<int> v(n);
         iota(v.begin(), v.end(), 1);
         shuffle(v.begin(), v.end(), rng);
@@ -44,7 +44,7 @@ struct RandomGen {
     }
 
     // ランダム文字列
-    string random_string(int n, string chars = "abcdefghijklmnopqrstuvwxyz") {
+    string random_string(const int& n, string chars = "abcdefghijklmnopqrstuvwxyz") {
         string s;
         for (int i = 0; i < n; i++) {
             s += chars[ri(0, chars.size() - 1)];
@@ -53,14 +53,15 @@ struct RandomGen {
     }
 
     // ランダムペア 
-    pair<int, int> random_pair_int(int l, int r) {
+    pair<int, int> random_pair_int(const int& l, const int& r) {
         int a = ri(l, r);
         int b = ri(l, r);
         return {a, b};
     }
 
     // ランダムグラフ
-    vector<pair<int, int>> random_graph(int n, int m) {
+    vector<pair<int, int>> random_graph(const int& n, int& m) {
+        if (m > n * (n - 1) / 2) m = n * (n - 1) / 2;
         set<pair<int, int>> st;
         while (st.size() < m) {
             int u = ri(0, n-1);
@@ -73,7 +74,8 @@ struct RandomGen {
         return vector<pair<int, int>> (st.begin(), st.end());
     }
 
-    vector<pair<int, int>> random_directed_graph(int n, int m) {
+    vector<pair<int, int>> random_directed_graph(const int& n, int& m) {
+        if (m > n * (n - 1)) m = n * (n - 1);
         set<pair<int, int>> st;
         while (st.size() < m) {
             int u = ri(0, n-1);
@@ -86,7 +88,8 @@ struct RandomGen {
     }
 
     // ランダムDAG(有行非巡回グラフ)
-    vector<pair<int, int>> random_dag(int n, int m) {
+    vector<pair<int, int>> random_dag(const int& n, int& m) {
+        if (m > n * (n - 1) / 2) m = n * (n - 1) / 2;
         vector<int> order(n);
         iota(order.begin(), order.end(), 0);
         shuffle(order.begin(), order.end(), rng);
@@ -105,7 +108,8 @@ struct RandomGen {
         return vector<pair<int, int>> (st.begin(), st.end());
     }
 
-    vector<Edge> random_weighted_dag(int n, int m, int low, int high) {
+    vector<Edge> random_weighted_dag(const int& n, int& m, const int& low, const int& high) {
+        if (m > n * (n - 1) / 2) m = n * (n - 1) / 2;
         vector<int> order(n);
         iota(order.begin(), order.end(), 0);
         shuffle(order.begin(), order.end(), rng);
@@ -130,7 +134,7 @@ struct RandomGen {
     }
 
     // ランダム木
-    vector<pair<int, int>> random_tree(int n) {
+    vector<pair<int, int>> random_tree(const int& n) {
         vector<pair<int, int>> e;
         for (int i = 1; i < n; i++) {
             int p = ri(0, i-1);
@@ -140,7 +144,7 @@ struct RandomGen {
         return e;
     }
 
-    vector<Edge> random_weighted_tree(int n, int low, int high) {
+    vector<Edge> random_weighted_tree(const int& n, const int& low, const int& high) {
         vector<Edge> e;
         for (int i = 1; i < n; i++) {
             int p = ri(0, i-1);
@@ -152,7 +156,8 @@ struct RandomGen {
     }
 
     // ランダム最小全域木
-    vector<Edge> random_mst(int n, int m, int low, int high) {
+    vector<Edge> random_mst(const int& n, int& m, const int& low, const int& high) {
+        if (m > n * (n - 1) / 2) m = n * (n - 1) / 2;
         vector<Edge> e;
         set<pair<int, int>> used;
         for (int i = 1; i < n; i++) {
@@ -162,16 +167,16 @@ struct RandomGen {
             e.push_back({p, i, w});
         }
         
-        while (used.size() < m) {
+        while (e.size() < m) {
             int u = ri(0, n - 1);
             int v = ri(0, n - 1);
 
             if (u == v) continue;
             if (u > v) swap(u, v);
             if (used.count({u, v})) continue;
-
-            used.insert({u, v});
+            
             int w = ri(low, high);
+            used.insert({u, v});
             e.push_back({u, v, w});
         }
         return e;
