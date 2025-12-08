@@ -53,6 +53,28 @@ struct RandomTester {
         printer_input(in);
     }
 
+    void execution_time() {
+        cout << "========= RESULT =========\n";
+        Input in = generator();
+        cout << "[INPUT]\n";
+        print_in(in);
+
+        Output out_main, out_naive;
+
+        cout << "[MAIN OUTPUT]\n";
+        int ti_main = clock();
+        out_main = solver_main(in);
+        printer_output(out_main);
+        printf("Execution Time: %.4lf sec\n", 1.0 * (clock() - ti_main) / CLOCKS_PER_SEC);
+
+        cout << "[NAIVE OUTPUT]\n";
+        int ti_naive = clock();
+        out_naive = solver_naive(in);
+        print_out(out_naive);
+        printf("Execution Time: %.4lf sec\n", 1.0 * (clock() - ti_naive) / CLOCKS_PER_SEC);
+        cout << "==========================\n";
+    }
+
     void run(int iterations = 100000) {
         for (int i = 0; i < iterations; i++) {
             Input in = generator();
@@ -86,7 +108,7 @@ struct RandomTester {
 // ======================================================
 
 int main() {
-    RandomTester<TestCase, vector<int>> tester(random_case, fast, naive, print_in, print_out);
+    RandomTester<TestCase, long long> tester(random_case, fast, naive, print_in, print_out);
     tester.run();
     return 0;
 }

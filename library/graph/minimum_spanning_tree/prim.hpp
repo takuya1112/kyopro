@@ -1,6 +1,8 @@
 // prim(graph)の形で使用し
 // 最小全域木問題(MST)を解く
 // O((E + V) log V) 辺の数が多い(密なグラフ)場合に強い
+// graphは無向グラフのように両方向に重み付きの辺を張る
+// graph[v].pb({u, w}), graph[u].pb({v, w})
 
 #pragma once
 #include <vector>

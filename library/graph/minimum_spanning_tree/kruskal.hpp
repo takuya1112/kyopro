@@ -10,18 +10,18 @@
 
 struct edge { 
     int u, v; 
-    long long cost; 
+    long long w; 
 };
 
 long long kruskal(int n, std::vector<edge>& edges) {
-    std::sort(edges.begin(), edges.end(), [] (const edge& e1, const edge& e2) {return e1.cost < e2.cost;} );
+    std::sort(edges.begin(), edges.end(), [] (const edge& e1, const edge& e2) {return e1.w < e2.w;} );
     dsu uf(n);
     long long res = 0;
 
     for (auto& e : edges) {
         if (!uf.same(e.u, e.v)) {
             uf.unite(e.u, e.v);
-            res += e.cost;
+            res += e.w;
         }
     }
     return res;

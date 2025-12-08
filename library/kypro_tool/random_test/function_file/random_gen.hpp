@@ -1,3 +1,7 @@
+// 無向グラフの辺の数の最大は n * (n - 1) / 2
+// 有行グラフの辺の数の最大は n * (n - 1)　
+// これ以下でないと無限ループにはいる
+
 #pragma once
 #include <bits/stdc++.h>
 using namespace std;
@@ -144,6 +148,32 @@ struct RandomGen {
             e.push_back({p, i, w});
         }
         shuffle(e.begin(), e.end(), rng);
+        return e;
+    }
+
+    // ランダム最小全域木
+    vector<Edge> random_mst(int n, int m, int low, int high) {
+        vector<Edge> e;
+        set<pair<int, int>> used;
+        for (int i = 1; i < n; i++) {
+            int p = ri(0, i-1);
+            int w = ri(low, high);
+            used.insert({p, i});
+            e.push_back({p, i, w});
+        }
+        
+        while (used.size() < m) {
+            int u = ri(0, n - 1);
+            int v = ri(0, n - 1);
+
+            if (u == v) continue;
+            if (u > v) swap(u, v);
+            if (used.count({u, v})) continue;
+
+            used.insert({u, v});
+            int w = ri(low, high);
+            e.push_back({u, v, w});
+        }
         return e;
     }
 

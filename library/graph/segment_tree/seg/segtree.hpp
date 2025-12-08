@@ -15,6 +15,8 @@
 // seg.query(a, b, k, l, r) で半開区間[a, b)のopを返す
 // kは節点番号、l, rはその節点が[l, r) に対応してるのを示す((a, b)だけ入力すればいい)
 
+// setのdata[k] = a をdata[k] += aにすると更新から加算になる
+
 #pragma once
 #include <vector>
 #include <climits>

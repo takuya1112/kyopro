@@ -4,40 +4,28 @@ using namespace std;
 #include "random_gen.hpp"
 
 // 入力データの型を定義する
+
 struct TestCase {
-    int n, q;
-    vector<int> v;
-    vector<int> queries;
+    int n, m;
+    vector<Edge> edges;
 };
 
 // WAの時の入力データを出力する関数
 void print_in(const TestCase& in) {
-    cout << in.n << " " << in.q << endl;
-    cout << "v: ";
-    for (int i = 0; i < in.n; i++) {
-        cout << in.v[i] << ' ';
-    } cout << endl;
-    cout << "q: ";
-    for (int i = 0; i < in.q; i++) {
-        cout << in.queries[i] << ' ';
-    } cout << endl;
+    cout << in.n << " " << in.m << endl;
 }
 
 // WAの時の出力データを出力する関数
-void print_out(const vector<int>& out) {
-    for (int i = 0; i < out.size(); i++) {
-        cout << out[i] << ' ';
-    } cout << endl;
+void print_out(const long long& out) {
+    cout << out << endl;
 }
 
 // 入力データのランダム生成する関数
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.n = gen.ri(5, 20);
-    in.q = gen.ri(1, 5);
-    in.v = gen.random_array(in.n, 0, 50);
-    sort(in.v.begin(), in.v.end());
-    in.queries = gen.random_array(in.q, 0, 50);
+    in.n = gen.ri(500, 1000);
+    in.m = in.n - 1;
+    in.edges = gen.random_mst(in.n, in.m, 1, 100);
     return in;
 }
