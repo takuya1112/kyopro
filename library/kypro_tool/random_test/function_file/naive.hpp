@@ -7,38 +7,27 @@ using namespace std;
 using namespace atcoder;
 #include "data.hpp"
 
-int H, W, best;
-vector<string> grid;
-vector<vector<bool>> used;
 
-int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, 1, 0, -1};
+vector<int> naive(const TestCase &tc) {
+    int N = tc.n, Q = tc.q;
+    vector<int> v = tc.v;
+    vector<Query> queries = tc.queries;
 
-void dfs(int sx, int sy, int gx, int gy, int d) {
-    if (d >= best) return;
-    if (sx == gx && sy == gy) {
-        best = min(best, d);
-        return;
+    vector<int> res;
+    for (int qi = 0; qi < Q; qi++) {
+        Query q = queries[qi];
+        if (q.cmd == 0) {
+            for (int l = q.l; l < q.r; l++) {
+                v[l] = q.x;
+            }
+        } else {
+            int ans = 1e9;
+            for (int l = q.l; l < q.r; l++) {
+                ans = min(ans, v[l]);
+            }
+            if (ans == 1e9) res.push_back(-1);
+            else res.push_back(ans);
+        }
     }
-
-    used[sx][sy] = true;
-    for (int i = 0; i < 4; i++) {
-        int x = sx + dx[i];
-        int y = sy + dy[i];
-        if (x < 0 || x >= H || y < 0 || y >= W) continue;
-        if (grid[x][y] == '#') continue;
-        if (used[x][y]) continue;
-        dfs(x, y, gx, gy, d + 1);
-    } 
-    used[sx][sy] = false;
-}
-
-int naive(const TestCase &tc) {
-    H = tc.h, W = tc.w;
-    grid = tc.grid;
-    best = 1e9;
-    used.assign(H, vector<bool> (W, false));
-    dfs(0, 0, H - 1, W - 1, 0);
-    if (best == 1e9) return -1;
-    else return best;
+    return res;
 }

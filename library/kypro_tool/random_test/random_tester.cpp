@@ -97,7 +97,6 @@ struct RandomTester {
                 cout << "==========================\n";
                 return;
             }
-            cout << i << endl;
         }
         cout << "All TESTS PASSED!\n";
     }
@@ -109,7 +108,7 @@ struct RandomTester {
 // ======================================================
 
 int main() {
-    RandomTester<TestCase, int> tester(random_case, fast, naive, print_in, print_out);
-    tester.run();
+    RandomTester<TestCase, vector<int>> tester(random_case, fast, naive, print_in, print_out);
+    tester.execution_time();
     return 0;
 }
