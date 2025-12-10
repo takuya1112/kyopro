@@ -1,5 +1,7 @@
-
-
+// using mint = modint<998244353>;
+// mint xで使用し
+// 計算をmodで割った余りを返す
+// 拡張ユークリッドの互除法を使って逆元を計算してるのでmodは素数でなくてもいい
 
 #pragma once
 #include <iostream>
@@ -30,7 +32,7 @@ struct modint {
     }
 
     static long long inv_ll(long long a) {
-        modint b = MOD, u = 1, v = 0;
+        long long b = MOD, u = 1, v = 0;
         while (b) {
             long long t = a / b;
             a -= t * b; std::swap(a, b);

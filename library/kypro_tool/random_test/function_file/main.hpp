@@ -6,6 +6,9 @@ using namespace std;
 #include "data.hpp"
 
 
+#pragma once
+#include <iostream>
+
 template <long long MOD>
 struct mymodint {
     long long v;
@@ -28,7 +31,7 @@ struct mymodint {
     }
 
     mymodint operator*(const mymodint& other) const {
-        return mymodint(v * other.v % MOD);
+        return mymodint((__int128)v * other.v % MOD);
     }
 
     static long long inv_ll(long long a) {
@@ -52,12 +55,6 @@ struct mymodint {
         return *this * other.inv();
     }
 
-    mymodint& operator+=(const mymodint& o) { return *this = *this + o; }
-    mymodint& operator-=(const mymodint& o) { return *this = *this - o; }
-    mymodint& operator*=(const mymodint& o) { return *this = *this * o; }
-    mymodint& operator/=(const mymodint& o) { return *this = *this / o; }
-
-    
     mymodint pow(long long n) const {
         if (n < 0) return inv().pow(-n);
         mymodint res = 1, a = *this;
@@ -69,13 +66,17 @@ struct mymodint {
         return res;
     }
 
+    mymodint& operator+=(const mymodint& o) { return *this = *this + o; }
+    mymodint& operator-=(const mymodint& o) { return *this = *this - o; }
+    mymodint& operator*=(const mymodint& o) { return *this = *this * o; }
+    mymodint& operator/=(const mymodint& o) { return *this = *this / o; }
 
     friend std::ostream& operator<<(std::ostream& os, const mymodint& m) {
         return os << m.v;
     }
 };
 
-using mint = mymodint<11>;
+using mint = mymodint<998244353>;
 
 vector<long long> fast(const TestCase &tc) {
     mint x = tc.n;
@@ -91,7 +92,7 @@ vector<long long> fast(const TestCase &tc) {
         } else if (op == 3) {
             x /= v;
         } else if (op == 4) {
-            x.pow(v);
+            x = x.pow(v);
         }
         ans.push_back(x.v);
     }
