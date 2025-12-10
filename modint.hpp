@@ -30,7 +30,7 @@ struct modint {
     }
 
     static long long inv_ll(long long a) {
-        long long b = MOD, u = 1, v = 0;
+        modint b = MOD, u = 1, v = 0;
         while (b) {
             long long t = a / b;
             a -= t * b; std::swap(a, b);
