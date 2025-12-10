@@ -1,3 +1,8 @@
+// init(n)で初期化して使う
+// 初期化でnまでの階乗 % MOD と逆階乗 % MOD済ませるO(n)
+// comb(n, k) で nCk % MODを返すO(1)
+// 逆元の計算にフェルマーの小定理を使ってるからmodは素数のみ
+
 #pragma once
 #include <iostream>
 #include <vector>
@@ -71,5 +76,5 @@ void init(int n) {
 
 mint comb(int n, int k) {
     if (k < 0 || k > n) return 0;
-    return fact[n] * fact[k] * fact[n - k];
+    return fact[n] * inv_fact[k] * inv_fact[n - k];
 }

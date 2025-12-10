@@ -1,9 +1,12 @@
-// 試したいコード
+// crt(a1, m1, a2, m2)の形で使用し
+// x ≡ a1(mod1), x ≡ a2(mod2)のｘを求めて
+// 合成モジュロMを求めて {x, M}のペアで返す
+// 解がない場合は{0, -1}を返す
+// 中国剰余定理(CRT)
 
 #pragma once
-#include <bits/stdc++.h>
-using namespace std;
-#include "data.hpp"
+#include <utility>
+#include <vector>
 
 long long gcd_ll(long long a, long long b) {
     if (a < 0) a = -a;
@@ -28,7 +31,7 @@ long long modinv(long long a, long long mod) {
     return u;
 }
 
-std::pair<long long, long long> crt_merge(long long a1, long long m1,
+std::pair<long long, long long> crt(long long a1, long long m1,
                                     long long a2, long long m2) 
 { 
     long long g = gcd_ll(m1, m2);
@@ -50,17 +53,13 @@ std::pair<long long, long long> crt_merge(long long a1, long long m1,
     return {r, mod};
 }
 
-std::pair<long long, long long> crt_(const std::vector<long long>& a, const std::vector<long long>& m) {
+std::pair<long long, long long> crt_vec(const std::vector<long long>& a, const std::vector<long long>& m) {
     long long r = 0, mod = 1;
     int n = a.size();
     for (int i = 0; i < n; i++) {
-        auto res = crt_merge(r, mod, a[i], m[i]);
+        auto res = crt(r, mod, a[i], m[i]);
         if (res.second == -1) return {0, -1};
         r = res.first, mod = res.second;
     }
     return {r, mod};
-}
-
-pair<long long, long long> fast(const TestCase &tc) {
-    return crt_(tc.a, tc.m);
 }
