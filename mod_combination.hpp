@@ -1,9 +1,6 @@
-// 試したいコード
-
 #pragma once
-#include <bits/stdc++.h>
-using namespace std;
-#include "data.hpp"
+#include <iostream>
+#include <vector>
 
 const int MOD = 1000000007;
 struct mint {
@@ -75,10 +72,4 @@ void init(int n) {
 mint comb(int n, int k) {
     if (k < 0 || k > n) return 0;
     return fact[n] * fact[k] * fact[n - k];
-}
-
-long long fast(const TestCase &tc) {
-    init(tc.n);
-    long long ans = comb(tc.n, tc.k).v;
-    return ans;
 }
