@@ -50,10 +50,11 @@ struct modint {
     }
 
     modint pow(long long n) const {
-        long long res = 1, a = *this;
+        if (n < 0) return inv().pow(-n);
+        modint res = 1, a = *this;
         while (n) {
-            if (n & 1) res = res * a;
-            a = a * a;
+            if (n & 1) res *= a;
+            a *= a;
             n >>= 1;
         }
         return res;

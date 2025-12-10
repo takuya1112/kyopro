@@ -94,12 +94,18 @@ const ll LINF = 4e18;
 // ========================================
 //                  solve
 // ========================================
-#include "modint.hpp"
-using mint = modint<998244353>;
+
+long long fastpow(long long a, long long n) {
+    long long res = 1;
+    while (n) {
+        if (n & 1) res *= a;
+        a *= a;
+        n >>= 1;
+    }
+    return res;
+}
+
 int main() {
-    mint x;
-    x += 998244351;
-    x *= 998244354;
-    cout << x << endl;
+    cout << fastpow(5, 7) % 11 << endl;
     return 0;
 }
