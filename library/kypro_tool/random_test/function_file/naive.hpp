@@ -8,26 +8,24 @@ using namespace atcoder;
 #include "data.hpp"
 
 
-vector<int> naive(const TestCase &tc) {
-    int N = tc.n, Q = tc.q;
-    vector<int> v = tc.v;
-    vector<Query> queries = tc.queries;
+using mint = modint998244353;
 
-    vector<int> res;
-    for (int qi = 0; qi < Q; qi++) {
-        Query q = queries[qi];
-        if (q.cmd == 0) {
-            for (int l = q.l; l < q.r; l++) {
-                v[l] = q.x;
-            }
-        } else {
-            int ans = 1e9;
-            for (int l = q.l; l < q.r; l++) {
-                ans = min(ans, v[l]);
-            }
-            if (ans == 1e9) res.push_back(-1);
-            else res.push_back(ans);
+long long naive(const TestCase &tc) {
+    mint x = tc.n;
+    for (int i = 0; i < tc.q; i++) {
+        auto [op, v] = tc.queries[i];
+        if (op == 0) {
+            x += v;
+        } else if (op == 1) {
+            x -= v;
+        } else if (op == 2) {
+            x *= v;
+        } else if (op == 3) {
+            x /= v;
+        } else if (op == 4) {
+            x.pow(v);
         }
     }
-    return res;
+    long long l;
+    return l;
 }
