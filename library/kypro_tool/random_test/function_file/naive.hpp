@@ -50,8 +50,8 @@ std::pair<long long, long long> sol(const std::vector<long long>& a, const std::
     return {r, mod};
 }
 
-OutCase naive(const TestCase &tc) {
-    OutCase out;
+Output naive(const TestCase &tc) {
+    Output out;
     out.p = sol(tc.a, tc.m);
     return out;
 }

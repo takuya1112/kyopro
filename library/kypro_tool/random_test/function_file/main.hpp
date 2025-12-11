@@ -61,8 +61,8 @@ std::pair<long long, long long> crt_(const std::vector<long long>& a, const std:
     return {r, mod};
 }
 
-OutCase fast(const TestCase &tc) {
-    OutCase out;
+Output fast(const TestCase &tc) {
+    Output out;
     out.p = crt_(tc.a, tc.m);
     return out;
 }

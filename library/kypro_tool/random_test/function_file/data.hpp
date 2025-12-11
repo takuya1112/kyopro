@@ -13,13 +13,13 @@ struct TestCase {
     auto tie() const { return std::tie(n, a, m, v); }
 };
 
-struct OutCase {
+struct Output {
     pair<long long, long long> p;
 
     auto tie() const { return std::tie(p); }
 };
 
-inline bool operator == (const OutCase& a, const OutCase& b) {
+inline bool operator == (const Output& a, const Output& b) {
     return a.tie() == b.tie();
 }
 
@@ -29,7 +29,7 @@ void print_in(const TestCase& in) {
 }
 
 // WAの時の出力データを出力する関数
-void print_out(const OutCase& out) {
+void print_out(const Output& out) {
     cout << out << "\n";
 }
 
