@@ -1,7 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
 using namespace std;
-#include <concepts>
 
 template<class T1, class T2> ostream& operator << (ostream &s, const pair<T1,T2>& P)
 { return s << '<' << P.first << ", " << P.second << '>'; }
@@ -34,11 +33,11 @@ template<class T1, class T2> ostream& operator << (ostream &s, const map<T1,T2>&
 template<class T1, class T2> ostream& operator << (ostream &s, const unordered_map<T1,T2>& P)
 { for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
 
-
+template <class... T> ostream& operator << (ostream &s, const tuple<T...>& P) 
+{ apply([&s](auto&&... args) { int i = 0; (( s << (i ++ ? "\n" : "") << args), ...);}, P); return s; }
 
 template<class T>
-concept HasTie = requires(const T& t) {
-    { t.tie() };
-};
+concept HasTie = requires(const T& t) { { t.tie() }; };
 
-template <HasTie T>
+template <HasTie T> ostream& operator << (ostream &s, const T& t) 
+{ return s << t.tie(); }

@@ -36,6 +36,12 @@ struct RandomGen {
         return v;
     }
 
+    vector<vector<int>> random_array2d(const int& h, const int& w, const int& l, const int& r) {
+        vector<vector<int>> v(h, vector<int>(w));
+        for (auto &x : v) for (auto &y : x) y = ri(l, r);
+        return v;
+    }
+
     vector<int> random_perm(const int& n) {
         vector<int> v(n);
         iota(v.begin(), v.end(), 1);

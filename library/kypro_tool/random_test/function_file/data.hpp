@@ -8,17 +8,28 @@ using namespace std;
 struct TestCase {
     int n;
     vector<long long> a, m;
+    vector<vector<int>> v;
 
-    auto tie() const { return std::tie(n, a, m); }
+    auto tie() const { return std::tie(n, a, m, v); }
 };
+
+struct OutCase {
+    pair<long long, long long> p;
+
+    auto tie() const { return std::tie(p); }
+};
+
+inline bool operator == (const OutCase& a, const OutCase& b) {
+    return a.tie() == b.tie();
+}
 
 // WAの時の入力データを出力する関数
 void print_in(const TestCase& in) {
-    for (int i = 0; i < (int)in.a.size(); i++) cout << in.a[i] << ' ' << in.m[i] << endl;
+    cout << in << "\n";
 }
 
 // WAの時の出力データを出力する関数
-void print_out(const pair<long long, long long>& out) {
+void print_out(const OutCase& out) {
     cout << out << "\n";
 }
 
@@ -32,5 +43,6 @@ TestCase random_case() {
         in.a.push_back(a);
         in.m.push_back(gen.rll(a, 10));
     }
+    in.v = gen.random_array2d(5, 5, 0, 10);
     return in;
 }

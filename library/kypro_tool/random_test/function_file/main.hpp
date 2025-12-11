@@ -58,9 +58,11 @@ std::pair<long long, long long> crt_(const std::vector<long long>& a, const std:
         if (res.second == -1) return {0, -1};
         r = res.first, mod = res.second;
     }
-    return {r, mod + 1};
+    return {r, mod};
 }
 
-pair<long long, long long> fast(const TestCase &tc) {
-    return crt_(tc.a, tc.m);
+OutCase fast(const TestCase &tc) {
+    OutCase out;
+    out.p = crt_(tc.a, tc.m);
+    return out;
 }
