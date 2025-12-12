@@ -6,7 +6,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Edge { int u, v, w; };
+struct Edge { int u, v, w; auto tie() const { return std::tie(u, v, w); }};
 
 struct RandomGen {
     // ランダム生成

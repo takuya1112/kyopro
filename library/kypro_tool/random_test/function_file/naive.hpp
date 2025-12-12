@@ -7,51 +7,39 @@ using namespace std;
 using namespace atcoder;
 #include "data.hpp"
 
-long long gcd_(long long a, long long b) {
-    if (a < 0) a = -a;
-    if (b < 0) b = -b;
-    while (b != 0) {
-        long long t = a % b;
-        a = b;
-        b = t;
-    }
-    return a;
-}
+std::vector<long long> na_graph(int s, int g, const std::vector<std::vector<pair<int, int>>>& graph) {
+    int N = graph.size();
+    std::vector<long long> dist(N, 1e9);
+    vector<bool> used(N);
+    dist[s] = 0;
 
-long long lcm_(long long a, long long b) {
-    if (a == 0 || b == 0) return 0;
-    return a / gcd_(a, b) * b;
-}
+    for (int i = 0; i < N; i++) {
+        int u = -1;
+        for (int j = 0; j < N; j++) {
+            if (!used[j] && (u == -1 || dist[j] < dist[u])) {
+                u = j;
+            }
+        }
 
+        if (u == -1) break;
+        used[u] = true;
 
-pair<long long, long long> solve(long long a1, long long m1,
-                                    long long a2, long long m2) 
-{
-    long long start = a1;
-
-    long long lcm = lcm_(m1, m2);
-
-    for (long long x = start; x < start + lcm; x++) {
-        if (x % m1 == a1 % m1 && x % m2 == a2 % m2) {
-            return {x, lcm};
+        for (auto [v, w] : graph[u]) {
+            dist[v] = min(dist[v], dist[u] + w);
         }
     }
-    return {0LL, -1LL};
+    return dist;
 }
 
-std::pair<long long, long long> sol(const std::vector<long long>& a, const std::vector<long long>& m) {
-    long long r = 0, mod = 1;
-    int n = a.size();
-    for (int i = 0; i < n; i++) {
-        auto res = solve(r, mod, a[i], m[i]);
-        if (res.second == -1) return {0, -1};
-        r = res.first, mod = res.second;
+Result naive(const TestCase &tc) {
+    Result out;
+    int N = tc.n, M = tc.m;
+    vector<vector<pair<int, int>>> graph(N);
+    for (int i = 0; i < M; i++) {
+        auto [u, v, c] = tc.graph[i];
+        graph[u].push_back({v, c});
     }
-    return {r, mod};
-}
-
-Output naive(const TestCase &tc) {
-    Output out;
-    out.p = sol(tc.a, tc.m);
+    auto dist = na_graph(0, N - 1, graph);
+    out.res = dist[N - 1];
     return out;
 }

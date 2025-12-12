@@ -5,64 +5,39 @@
 using namespace std;
 #include "data.hpp"
 
-long long gcd_ll(long long a, long long b) {
-    if (a < 0) a = -a;
-    if (b < 0) b = -b;
-    while (b != 0) {
-        long long t = a % b;
-        a = b;
-        b = t;
+template<class T>
+long long warshall(std::vector<std::vector<T>>& graph) {
+    int N = graph.size();
+
+    for (int i = 0; i < N; i++) graph[i][i] = 0;
+
+    for (int k = 0; k < N; k++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                graph[i][j] = std::min(graph[i][j], graph[i][k] + graph[k][j]);
+            }
+        }
     }
-    return a;
-}
 
-long long modinv(long long a, long long mod) {
-    long long b = mod, u = 1, v = 0;
-    while (b) {
-        long long t = a / b;
-        a -= t * b; std::swap(a, b);
-        u -= t * v; std::swap(u, v);
-    } 
-    u %= mod;
-    if (u < 0) u += mod;
-    return u;
-}
-
-std::pair<long long, long long> crt_merge(long long a1, long long m1,
-                                    long long a2, long long m2) 
-{ 
-    long long g = gcd_ll(m1, m2);
-    long long diff = a2 - a1;
-
-    if (diff % g != 0) return {0, -1};
-
-    long long m1_ = m1 / g;
-    long long m2_ = m2 / g;
-
-    long long t = (diff / g) % m2_;
-    long long inv = modinv(m1_ % m2_, m2_);
-    t = (t * inv) % m2_;
-
-    long long r = a1 + m1 * t;
-    long long mod = m1 * m2_;
-
-    r = (r % mod + mod) % mod;
-    return {r, mod};
-}
-
-std::pair<long long, long long> crt_(const std::vector<long long>& a, const std::vector<long long>& m) {
-    long long r = 0, mod = 1;
-    int n = a.size();
-    for (int i = 0; i < n; i++) {
-        auto res = crt_merge(r, mod, a[i], m[i]);
-        if (res.second == -1) return {0, -1};
-        r = res.first, mod = res.second;
+    long long ans = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            ans += graph[i][j];
+        }
     }
-    return {r, mod};
+
+    return ans;
 }
 
-Output fast(const TestCase &tc) {
-    Output out;
-    out.p = crt_(tc.a, tc.m);
+Result fast(const TestCase &tc) {
+    Result out;
+    int N = tc.n, M = tc.m;
+    vector<vector<int>> graph(N, vector<int>(N, 1e9));
+    for (int i = 0; i < M; i++) {
+        auto [u, v, c] = tc.graph[i];
+        graph[u][v] = c;
+    }
+
+    out.res = warshall(graph);
     return out;
 }
