@@ -1,3 +1,5 @@
+#define CLI11_HEADER_ONLY
+#include <CLI/CLI.hpp>
 #include <iostream>
 #include <vector>
 #include <filesystem>
