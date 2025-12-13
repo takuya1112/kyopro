@@ -1,102 +1,42 @@
-#ifndef ONLINE_JUDGE
-#define _GLIBCXX_DEBUG
-#endif
-#include <bits/stdc++.h>
-using namespace std;
-#include <atcoder/all>
-using namespace atcoder;
-
-// --- utility ---
-using pint = pair<int, int>;
-using pll = pair<long long, long long>;
-using dint = array<int, 2>;
-using dll = array<long long, 2>;
-using tint = array<int, 3>;
-using tll = array<long long, 3>;
-using fint = array<int, 4>;
-using fll = array<long long, 4>;
-using qint = array<int, 5>;
-using qll = array<long long, 5>;
-using vint = vector<int>;
-using vll = vector<long long>;
-using vs = vector<string>;
-using ll = long long;
-using u32 = unsigned int;
-using u64 = unsigned long long;
-using i128 = __int128_t;
-using u128 = __uint128_t;
-template <class T> using pq = priority_queue<T, vector<T>>;
-template <class T> using pq_g = priority_queue<T, vector<T>, greater<T>>;
-
-// --- macros ---
-#define rep(i, a) for (long long i = 0; i < (long long)(a); i++)
-#define rep2(i, a, b) for (long long i = a; i < (long long)(b); i++)
-#define rrep(i, a) for (long long i = (a)-1; i >= (long long)(0); --i)
-#define rrep2(i, a, b) for (long long i = (b)-1; i >= (long long)(a); --i)
-#define eb emplace_back
-#define pb push_back
-#define mp make_pair
-#define mt make_tuple
-#define fi first
-#define se second
-#define next_p(x) next_permutation(x.begin(), x.end())
-#define all(x) x.begin(), x.end()
-#define rall(x) x.rbegin(), x.rend()
-
-#ifndef ONLINE_JUDGE
-// --- debug macros ---
-#define debug(x) cout << #x << " = " << (x) << " (L" << __LINE__ << ")" << endl
-
-// --- debug stream ---
-template<class T1, class T2> ostream& operator << (ostream &s, pair<T1,T2> P)
-{ return s << '<' << P.first << ", " << P.second << '>'; }
-template<class T> ostream& operator << (ostream &s, array<T, 2> P)
-{ return s << '<' << P[0] << ", " << P[1] << '>'; }
-template<class T> ostream& operator << (ostream &s, array<T, 3> P)
-{ return s << '<' << P[0] << ", " << P[1] << ", " << P[2] << '>'; }
-template<class T> ostream& operator << (ostream &s, array<T, 4> P)
-{ return s << '<' << P[0] << ", " << P[1] << ", " << P[2] << ", " << P[3] << '>'; }
-template<class T> ostream& operator << (ostream &s, vector<T> P)
-{ for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
-template<class T> ostream& operator << (ostream &s, deque<T> P)
-{ for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
-template<class T> ostream& operator << (ostream &s, vector<vector<T> > P)
-{ for (int i = 0; i < P.size(); ++i) { s << endl << P[i]; } return s << endl; }
-template<class T> ostream& operator << (ostream &s, set<T> P)
-{ for (auto it : P) { s << "<" << it << "> "; } return s; }
-template<class T> ostream& operator << (ostream &s, multiset<T> P)
-{ for (auto it : P) { s << "<" << it << "> "; } return s; }
-template<class T> ostream& operator << (ostream &s, unordered_set<T> P)
-{ for (auto it : P) { s << "<" << it << "> "; } return s; }
-template<class T1, class T2> ostream& operator << (ostream &s, map<T1,T2> P)
-{ for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
-template<class T1, class T2> ostream& operator << (ostream &s, unordered_map<T1,T2> P)
-{ for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
-#endif // ONLINE_JUDGE
-
-// --- bit operations ---
-int popcnt(int x) { return __builtin_popcount(x); }
-int popcnt(unsigned int x) { return __builtin_popcount(x); }
-int popcnt(long long x) { return __builtin_popcountll(x); }
-int popcnt(unsigned long long x) { return __builtin_popcountll(x); }
-
-int bsf(int x) { return __builtin_ctz(x); }
-int bsf(unsigned int x) { return __builtin_ctz(x); }
-int bsf(long long x) { return __builtin_ctzll(x); }
-int bsf(unsigned long long x) { return __builtin_ctzll(x); }
-
-// --- modular ---
-// using mint = modint998244353;
-// using mint = modint1000000007;
-
-// --- constants ---
-const int INF = 1e9;
-const ll LINF = 4e18;
-
-// ========================================
-//                  solve
-// ========================================
-
-int main() {
-    return 0;
-}
+g++ -std=c++17 -I ../../vcpkg/installed/x64-linux/include/ -L ../../vcpkg/installed/x64-linux/lib/ -o snip library/kypro_tool/add_snip/main.cpp
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `main':
+main.cpp:(.text+0x5227): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x5476): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x59d9): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x5b96): undefined reference to `CLI::Option::expected(int, int)'
+/usr/bin/ld: main.cpp:(.text+0x5c54): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x5e11): undefined reference to `CLI::Option::expected(int, int)'
+/usr/bin/ld: main.cpp:(.text+0x5ecf): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x5f94): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x612b): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x6394): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: main.cpp:(.text+0x652b): undefined reference to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: /tmp/cc6f7fy3.o:main.cpp:(.text+0x69f0): more undefined references to `CLI::App::add_subcommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)' follow
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `main':
+main.cpp:(.text+0x6a53): undefined reference to `CLI::App::parse(int, char const* const*)'
+/usr/bin/ld: main.cpp:(.text+0x7b50): undefined reference to `CLI::App::exit(CLI::Error const&, std::ostream&, std::ostream&) const'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `__static_initialization_and_destruction_0()':
+main.cpp:(.text+0xab59): undefined reference to `CLI::detail::ExistingFileValidator::ExistingFileValidator()'
+/usr/bin/ld: main.cpp:(.text+0xab8b): undefined reference to `CLI::detail::ExistingDirectoryValidator::ExistingDirectoryValidator()'
+/usr/bin/ld: main.cpp:(.text+0xabbd): undefined reference to `CLI::detail::ExistingPathValidator::ExistingPathValidator()'
+/usr/bin/ld: main.cpp:(.text+0xabef): undefined reference to `CLI::detail::NonexistentPathValidator::NonexistentPathValidator()'
+/usr/bin/ld: main.cpp:(.text+0xac21): undefined reference to `CLI::detail::EscapedStringTransformer::EscapedStringTransformer()'
+/usr/bin/ld: main.cpp:(.text+0xade2): undefined reference to `CLI::detail::IPV4Validator::IPV4Validator()'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `CLI::App::App(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)':
+main.cpp:(.text._ZN3CLI3AppC2ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_[_ZN3CLI3AppC5ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_]+0x78): undefined reference to `CLI::App::App(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, CLI::App*)'
+/usr/bin/ld: main.cpp:(.text._ZN3CLI3AppC2ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_[_ZN3CLI3AppC5ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES6_]+0xf2): undefined reference to `CLI::App::set_help_flag(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `CLI::App::got_subcommand(CLI::App const*) const':
+main.cpp:(.text._ZNK3CLI3App14got_subcommandEPKS0_[_ZNK3CLI3App14got_subcommandEPKS0_]+0x23): undefined reference to `CLI::App::get_subcommand(CLI::App const*) const'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `bool CLI::detail::lexical_cast<double, (CLI::detail::enabler)0>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double&)':
+main.cpp:(.text._ZN3CLI6detail12lexical_castIdLNS0_7enablerE0EEEbRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERT_[_ZN3CLI6detail12lexical_castIdLNS0_7enablerE0EEEbRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERT_]+0x14a): undefined reference to `CLI::detail::get_group_separators[abi:cxx11]()'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `CLI::Option* CLI::App::add_flag<bool, (CLI::detail::enabler)0>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)':
+main.cpp:(.text._ZN3CLI3App8add_flagIbLNS_6detail7enablerE0EEEPNS_6OptionENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERT_SB_[_ZN3CLI3App8add_flagIbLNS_6detail7enablerE0EEEPNS_6OptionENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERT_SB_]+0xd1): undefined reference to `CLI::App::_add_flag_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::function<bool (std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&)>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `CLI::Option* CLI::App::add_option<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, (CLI::detail::enabler)0>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)':
+main.cpp:(.text._ZN3CLI3App10add_optionINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_LNS_6detail7enablerE0EEEPNS_6OptionES7_RT_S7_[_ZN3CLI3App10add_optionINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_LNS_6detail7enablerE0EEEPNS_6OptionES7_RT_S7_]+0xd9): undefined reference to `CLI::App::add_option(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::function<bool (std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&)>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, std::function<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > ()>)'
+/usr/bin/ld: main.cpp:(.text._ZN3CLI3App10add_optionINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_LNS_6detail7enablerE0EEEPNS_6OptionES7_RT_S7_[_ZN3CLI3App10add_optionINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_LNS_6detail7enablerE0EEEPNS_6OptionES7_RT_S7_]+0x1b8): undefined reference to `CLI::Option::type_size(int, int)'
+/usr/bin/ld: main.cpp:(.text._ZN3CLI3App10add_optionINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_LNS_6detail7enablerE0EEEPNS_6OptionES7_RT_S7_[_ZN3CLI3App10add_optionINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_LNS_6detail7enablerE0EEEPNS_6OptionES7_RT_S7_]+0x1cc): undefined reference to `CLI::Option::expected(int)'
+/usr/bin/ld: /tmp/cc6f7fy3.o: in function `CLI::Option* CLI::App::add_option<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, (CLI::detail::enabler)0>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)':
+main.cpp:(.text._ZN3CLI3App10add_optionISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS8_EESA_LNS_6detail7enablerE0EEEPNS_6OptionES8_RT_S8_[_ZN3CLI3App10add_optionISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS8_EESA_LNS_6detail7enablerE0EEEPNS_6OptionES8_RT_S8_]+0xd9): undefined reference to `CLI::App::add_option(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::function<bool (std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&)>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, std::function<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > ()>)'
+/usr/bin/ld: main.cpp:(.text._ZN3CLI3App10add_optionISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS8_EESA_LNS_6detail7enablerE0EEEPNS_6OptionES8_RT_S8_[_ZN3CLI3App10add_optionISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS8_EESA_LNS_6detail7enablerE0EEEPNS_6OptionES8_RT_S8_]+0x186): undefined reference to `CLI::Option::type_size(int, int)'
+/usr/bin/ld: main.cpp:(.text._ZN3CLI3App10add_optionISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS8_EESA_LNS_6detail7enablerE0EEEPNS_6OptionES8_RT_S8_[_ZN3CLI3App10add_optionISt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS8_EESA_LNS_6detail7enablerE0EEEPNS_6OptionES8_RT_S8_]+0x19a): undefined reference to `CLI::Option::expected(int)'
+collect2: error: ld returned 1 exit status

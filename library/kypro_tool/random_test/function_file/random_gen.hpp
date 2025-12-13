@@ -42,10 +42,34 @@ struct RandomGen {
         return v;
     }
 
+    vector<vector<long long>> random_array2dll(const int& h, const int& w, const int& l, const int& r) {
+        vector<vector<long long>> v(h, vector<long long>(w));
+        for (auto &x : v) for (auto &y : x) y = rll(l, r);
+        return v;
+    }
+
     vector<int> random_perm(const int& n) {
         vector<int> v(n);
         iota(v.begin(), v.end(), 1);
         shuffle(v.begin(), v.end(), rng);
+        return v;
+    }
+
+    // 累積和
+    vector<pair<int, int>> random_arry_pair(const int& n, const int& l, const int& r) {
+        vector<pair<int, int>> v(n);
+        for (auto& x : v) x = random_pair_int_strict(l, r);
+        return v;
+    }
+
+    vector<pair<pair<int, int>, pair<int, int>>> random_array2d_pair(const int& n, const int& h, const int& w) {
+        vector<pair<pair<int, int>, pair<int, int>>> v(n);
+        pair<int, int> x, y;
+        for (int i = 0; i < n; i++) {
+            x = random_pair_int_strict(0, h);
+            y = random_pair_int_strict(0, w);
+            v[i] = {{x.first, y.first}, {x.second, y.second}};
+        }
         return v;
     }
 
@@ -62,25 +86,13 @@ struct RandomGen {
     pair<int, int> random_pair_int(const int& l, const int& r) {
         int a = ri(l, r);
         int b = ri(l, r);
-        if (a > b) swap(a, b);
         return {a, b};
     }
 
-    vector<pair<int, int>> random_arry_pair(const int& n, const int& l, const int& r) {
-        vector<pair<int, int>> v(n);
-        for (auto& x : v) x = random_pair_int(l, r);
-        return v;
-    }
-
-    vector<pair<pair<int, int>, pair<int, int>>> random_array2d_pair(const int& n, const int& low_h, const int& high_h, const int& low_w,  const int& high_w) {
-        vector<pair<pair<int, int>, pair<int, int>>> v(n);
-        pair<int, int> h, w;
-        for (int i = 0; i < n; i++) {
-            h = random_pair_int(low_h, high_h);
-            w = random_pair_int(low_w, high_w);
-            v[i] = {{h.first, w.first}, {h.second, w.second}};
-        }
-        return v;
+    pair<int, int> random_pair_int_strict(const int& l, const int& r) {
+        int a = ri(l, r - 1);
+        int b = ri(a + 1, r);
+        return {a, b};
     }
 
     // ランダムグラフ

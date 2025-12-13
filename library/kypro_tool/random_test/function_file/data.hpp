@@ -6,11 +6,11 @@ using namespace std;
 
 // 入力データの型を定義する
 struct TestCase {
-    int h, w, q;
-    vector<vector<int>> vv;
-    vector<pair<pair<int, int>, pair<int, int>>> queries;
+    int n, q;
+    vector<int> v;
+    vector<pair<int, int>> queries;
     
-    auto tie() const { return std::tie(h, w, q, vv, queries); }
+    auto tie() const { return std::tie(n, q, v, queries); }
 };
 
 struct Result {
@@ -37,12 +37,10 @@ void print_out(const Result& out) {
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.h = gen.ri(5, 10);
-    in.w = gen.ri(5, 10);
-    in.q = gen.ri(5, 10);
+    in.n = gen.ri(100, 1000);
+    in.q = gen.ri(100, 1000);
 
-    in.vv = gen.random_array2d(in.h, in.w, 0, 10);
-    in.queries = gen.random_array2d_pair(in.q, 0, in.h, 0, in.w);
-
+    in.v = gen.random_array(in.n, 0, 100);
+    in.queries = gen.random_arry_pair(in.q, 0, in.n);
     return in;
 }
