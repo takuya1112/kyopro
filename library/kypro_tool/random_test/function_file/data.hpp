@@ -30,18 +30,18 @@ void print_in(const TestCase& in) {
 
 // WAの時の出力データを出力する関数
 void print_out(const Result& out) {
-    // cout << out << "\n";
+    cout << out << "\n";
 }
 
 // 入力データのランダム生成する関数
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.h = gen.ri(20, 100);
-    in.w = gen.ri(20, 100);
-    in.q = gen.ri(50, 100);
+    in.h = gen.ri(5, 10);
+    in.w = gen.ri(5, 10);
+    in.q = gen.ri(5, 10);
 
-    in.vv = gen.random_array2d(in.h, in.w, 0, 100);
+    in.vv = gen.random_array2d(in.h, in.w, 0, 10);
     in.queries = gen.random_array2d_pair(in.q, 0, in.h, 0, in.w);
 
     return in;

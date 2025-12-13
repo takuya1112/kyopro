@@ -27,7 +27,13 @@ Result fast(const TestCase &tc) {
 
     for (int i = 0; i < Q; i++) {
         auto [idx1, idx2] = tc.queries[i];
-        
+        auto [x1, y1] = idx1;
+        auto [x2, y2] = idx2;
+        x1++; y1++; x2++; y2++;
+        cout << x1 << " " << y1 << " " << x2 << " " << y2 << endl;
+        cout << ps[x1][y1] << " " << ps[x2][y2] << endl;
+        int sum = ps[x2][y2] - ps[x1 - 1][y2] - ps[x2][y1 - 1] + ps[x1 - 1][y1 - 1];
+        out.ans.push_back(sum);
     }
     return out;
 }
