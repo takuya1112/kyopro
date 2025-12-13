@@ -1,8 +1,8 @@
 // dijkstra(N, s, graph)の形で使用し
-// 重み付き(非負整数)グラフで,頂点ｓからの各頂点への最短距離を求める
+// 重み付き(非負整数)グラフで,頂点ｓからの各頂点への最小コストを求める
 // graphのpairは＜idx, cost＞で入れる
 // dist[i] == INF(4e18)だった場合はsからiへは到達不可能
-// dist[i] != INFだったら場合はsからiへの最短距離
+// dist[i] != INFだったら場合はsからiへの最小コスト
 
 #pragma once
 #include <vector>

@@ -6,16 +6,17 @@ using namespace std;
 
 // 入力データの型を定義する
 struct TestCase {
-    int n, m;
-    vector<Edge> graph;
-
-    auto tie() const { return std::tie(n, m, graph); }
+    int h, w, q;
+    vector<vector<int>> vv;
+    vector<pair<pair<int, int>, pair<int, int>>> queries;
+    
+    auto tie() const { return std::tie(h, w, q, vv, queries); }
 };
 
 struct Result {
-    long long res;
+    vector<int> ans;
 
-    auto tie() const { return res; }
+    auto tie() const { return std::tie(ans); }
 };
 
 inline bool operator == (const Result& a, const Result& b) {
@@ -29,15 +30,19 @@ void print_in(const TestCase& in) {
 
 // WAの時の出力データを出力する関数
 void print_out(const Result& out) {
-    cout << out << "\n";
+    // cout << out << "\n";
 }
 
 // 入力データのランダム生成する関数
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.n = gen.ri(2, 10);
-    in.m = gen.ri(in.n - 1, in.n * (in.n - 1) / 2);
-    in.graph = gen.random_mst(in.n, in.m, 10, 100);
+    in.h = gen.ri(20, 100);
+    in.w = gen.ri(20, 100);
+    in.q = gen.ri(50, 100);
+
+    in.vv = gen.random_array2d(in.h, in.w, 0, 100);
+    in.queries = gen.random_array2d_pair(in.q, 0, in.h, 0, in.w);
+
     return in;
 }

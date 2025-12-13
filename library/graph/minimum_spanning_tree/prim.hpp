@@ -10,8 +10,6 @@
 
 template <class T>
 long long prim(const std::vector<std::vector<std::pair<int, T>>>& graph) {
-    const long long INF = 4e18;
-
     int N = graph.size();
     std::vector<int> used(N, 0);
 

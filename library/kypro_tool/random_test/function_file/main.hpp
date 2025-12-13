@@ -5,39 +5,29 @@
 using namespace std;
 #include "data.hpp"
 
+
 template<class T>
-long long warshall(std::vector<std::vector<T>>& graph) {
-    int N = graph.size();
-
-    for (int i = 0; i < N; i++) graph[i][i] = 0;
-
-    for (int k = 0; k < N; k++) {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                graph[i][j] = std::min(graph[i][j], graph[i][k] + graph[k][j]);
-            }
+std::vector<std::vector<T>> prefix_sum2d(const std::vector<std::vector<T>>& a) {
+    int H = a.size();
+    int W = a[0].size();
+    std::vector<std::vector<T>> ps(H + 1, std::vector<T>(W + 1, 0));
+    for (int i = 0; i < H; i++) {
+        for (int j = 0; j < W; j++) {
+            ps[i + 1][j + 1] = a[i][j] + ps[i][j + 1] + ps[i + 1][j] - ps[i][j];
         }
     }
-
-    long long ans = 0;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            ans += graph[i][j];
-        }
-    }
-
-    return ans;
+    return ps;
 }
 
 Result fast(const TestCase &tc) {
     Result out;
-    int N = tc.n, M = tc.m;
-    vector<vector<int>> graph(N, vector<int>(N, 1e9));
-    for (int i = 0; i < M; i++) {
-        auto [u, v, c] = tc.graph[i];
-        graph[u][v] = c;
-    }
+    int H = tc.h, W = tc.w, Q = tc.q;
+    vector<vector<int>> vv = tc.vv;
+    vector<vector<int>> ps = prefix_sum2d(vv);
 
-    out.res = warshall(graph);
+    for (int i = 0; i < Q; i++) {
+        auto [idx1, idx2] = tc.queries[i];
+        
+    }
     return out;
 }

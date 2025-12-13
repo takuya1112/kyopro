@@ -5,6 +5,7 @@
 #pragma once
 #include <vector>
 #include <tuple>
+
 template<class T>
 std::vector<T> imos_1d(int n, const std::vector<std::tuple<int, int, T>>& operations) {
     std::vector<T> imos(n + 1, 0);

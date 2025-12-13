@@ -4,6 +4,7 @@
 
 #pragma once
 #include <vector>
+
 struct dsu {
     std::vector<int> parent, rank;
 

@@ -6,9 +6,9 @@ template<class T1, class T2> ostream& operator << (ostream &s, const pair<T1,T2>
 { return s << '<' << P.first << ", " << P.second << '>'; }
 
 template<class T> ostream& operator << (ostream &s, const vector<T>& P)
-{ for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
+{ s << "\n"; for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
 template<class T> ostream& operator << (ostream &s, const vector<vector<T> >& P)
-{ for (int i = 0; i < P.size(); ++i) { s << endl << P[i]; } return s << endl; }
+{ for (int i = 0; i < P.size(); ++i) { s << P[i]; } return s; }
 
 template<class T> ostream& operator << (ostream &s, const deque<T>& P)
 { for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
@@ -34,7 +34,7 @@ template<class T1, class T2> ostream& operator << (ostream &s, const unordered_m
 { for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
 
 template <class... T> ostream& operator << (ostream &s, const tuple<T...>& P) 
-{ apply([&s](auto&&... args) { int i = 0; (( s << (i ++ ? "\n" : "") << args), ...);}, P); return s; }
+{ apply([&s](auto&&... args) { int i = 0; (( s << (i ++ ? " " : "\n") << args), ...);}, P); return s; }
 
 template<class T>
 concept HasTie = requires(const T& t) { { t.tie() }; };

@@ -8,6 +8,7 @@
 #pragma once
 #include <vector>
 #include <tuple>
+
 template<class T>
 std::vector<std::vector<T>> imos_2d(int H, int W, const std::vector<std::tuple<int, int, int, int, T>>& operations) {
     std::vector<std::vector<T>> imos(H + 1, std::vector<T>(W + 1, 0));

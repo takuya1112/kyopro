@@ -62,7 +62,25 @@ struct RandomGen {
     pair<int, int> random_pair_int(const int& l, const int& r) {
         int a = ri(l, r);
         int b = ri(l, r);
+        if (a > b) swap(a, b);
         return {a, b};
+    }
+
+    vector<pair<int, int>> random_arry_pair(const int& n, const int& l, const int& r) {
+        vector<pair<int, int>> v(n);
+        for (auto& x : v) x = random_pair_int(l, r);
+        return v;
+    }
+
+    vector<pair<pair<int, int>, pair<int, int>>> random_array2d_pair(const int& n, const int& low_h, const int& high_h, const int& low_w,  const int& high_w) {
+        vector<pair<pair<int, int>, pair<int, int>>> v(n);
+        pair<int, int> h, w;
+        for (int i = 0; i < n; i++) {
+            h = random_pair_int(low_h, high_h);
+            w = random_pair_int(low_w, high_w);
+            v[i] = {{h.first, w.first}, {h.second, w.second}};
+        }
+        return v;
     }
 
     // ランダムグラフ
