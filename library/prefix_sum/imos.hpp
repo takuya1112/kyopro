@@ -4,21 +4,24 @@
 
 #pragma once
 #include <vector>
-#include <tuple>
 
-template<class T>
-std::vector<T> imos_1d(int n, const std::vector<std::tuple<int, int, T>>& operations) {
-    std::vector<T> imos(n + 1, 0);
-    
-    for (auto &[l, r, v] : operations) {
+template <class T>
+struct imos1d {
+    int n;
+    std::vector<T> imos;
+
+    imos1d(const int& n_) : n(n_), imos(n + 1, 0) {}
+
+    void add(const int& l, const int& r, const T& v) {
         imos[l] += v;
         imos[r + 1] -= v;
     }
 
-    for (int i = 1; i <= n; i++) {
-        imos[i] += imos[i - 1];
+    std::vector<T> build() {
+        std::vector<T> res(n + 1, 0);
+        for (int i = 1; i <= n; i++) {
+            res[i] += imos[i - 1];
+        }
+        return res;
     }
-
-    imos.pop_back();
-    return imos;
-}
+};

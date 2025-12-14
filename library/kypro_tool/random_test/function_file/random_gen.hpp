@@ -73,6 +73,12 @@ struct RandomGen {
         return v;
     }
 
+    vector<tuple<int, int, int>> random_array_tuple(const int& n, const int& l, const int& r, const int& w) {
+        vector<tuple<int, int, int>> v(n);
+        for (auto& x : v) x = random_tuple_int_strict(l, r, w);
+        return v;
+    }
+
     // ランダム文字列
     string random_string(const int& n, string chars = "abcdefghijklmnopqrstuvwxyz") {
         string s;
@@ -93,6 +99,14 @@ struct RandomGen {
         int a = ri(l, r - 1);
         int b = ri(a + 1, r);
         return {a, b};
+    }
+
+    // ランダム重み付きペア
+    tuple<int, int, int> random_tuple_int_strict(const int&l, const int& r, const int& w) {
+        int a = ri(l, r - 1);
+        int b = ri(a + 1, r);
+        int c = ri(0, w);
+        return {a, b, c};
     }
 
     // ランダムグラフ

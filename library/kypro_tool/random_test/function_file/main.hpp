@@ -5,33 +5,37 @@
 using namespace std;
 #include "data.hpp"
 
-template<class T>
-struct prefix_sum {
+template <class T>
+struct imos1d {
     int n;
-    std::vector<T> ps;
+    std::vector<T> imos;
 
-    prefix_sum(const std::vector<T>& a) {
-        n = a.size();
-        ps.assign(n + 1, 0);
-        for (int i = 0; i < n; i++) ps[i + 1] = ps[i] + a[i];
+    imos1d(const int& n_) : n(n_), imos(n + 1, 0) {}
+
+    void add(const int& l, const int& r, const T& v) {
+        imos[l] += v;
+        imos[r + 1] -= v;
     }
 
-    T sum(int l, int r) {
-        return ps[r] - ps[l];
+    std::vector<T> build() {
+        std::vector<T> res(n + 1, 0);
+        for (int i = 1; i <= n; i++) {
+            res[i] += imos[i - 1];
+        }
+        return res;
     }
 };
 
 
-
 Result fast(const TestCase &tc) {
     Result out;
-    int n = tc.n, Q = tc.q;
-    vector<int> v = tc.v;
-    prefix_sum ps(v);
-
-    for (int i = 0; i < Q; i++) {
-        auto [l, r] = tc.queries[i];
-        out.ans.push_back(ps.sum(l, r));
+    int N = tc.n, M = tc.m, Q = tc.q;
+    vector<tuple<int, int, int>> idx = tc.idx;
+    imos1d<int> imos(N);
+    for (int i = 0; i < M; i++) {
+        auto [l, r, w] = idx[i];
+        imos.add(l, r, w); 
     }
+    out.ans = imos.build();
     return out;
 }
