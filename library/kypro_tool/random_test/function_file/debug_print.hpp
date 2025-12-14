@@ -2,11 +2,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template<class T> 
-concept Printable = requires(ostream& s, const T& x) {
-    { s << x } -> same_as<ostream&>;
-};
-
 // tuple
 template <class... T> 
 ostream& operator << (ostream& s, const tuple<T...>& P) { 
@@ -54,17 +49,10 @@ template<class T1, class T2> ostream& operator << (ostream& s, const unordered_m
 { for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
 
 // tie()
+struct DebugPrintable {};
+
 template<class T>
-requires requires(const T& t) { t.tie(); }
+requires is_base_of_v<DebugPrintable, T>
 ostream& operator << (ostream& s, const T& t) {
     return s << t.tie();
 }
-
-// concept HasPrintableTie = requires(ostream& s, const T& t) 
-// { { t.tie() }; { s << t.tie() }-> same_as<ostream&>; };
-
-
-// template <class T> 
-// requires HasPrintableTie<T>
-// ostream& operator << (ostream& s, const T& t) 
-// { return s << t.tie(); }

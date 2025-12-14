@@ -5,14 +5,14 @@ using namespace std;
 #include "debug_print.hpp"
 
 // 入力データの型を定義する
-struct TestCase {
+struct TestCase : DebugPrintable {
     int n, m, q;
     vector<tuple<int, int, int>> idx;
     
     auto tie() const { return std::tie(n, m, q, idx); }
 };
 
-struct Result {
+struct Result : DebugPrintable {
     vector<int> ans;
 
     auto tie() const { return std::tie(ans); }
