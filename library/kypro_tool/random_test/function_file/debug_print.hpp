@@ -3,13 +3,15 @@
 using namespace std;
 
 // tuple
-template <class... T> 
-ostream& operator << (ostream& s, const tuple<T...>& P) { 
-    apply([&](const auto&&... args) { 
-        int i = 0; 
-        (( s << (i ++ ? " " : "\n") << args), ...);
-    }, P); 
-    return s; 
+template<class tuple, size_t ... I>
+void print_tuple_impl(ostream& s, const tuple t, index_sequence<I...>) {
+    ((s << (I == 0 ? "\n" : " ") << get<I>(t)), ...);
+}
+
+template<class... T>
+ostream& operator << (ostream& s, const tuple<T...>& t) {
+    print_tuple_impl(s, t, index_sequence_for<T...>{});
+    return s;
 }
 
 // pair
