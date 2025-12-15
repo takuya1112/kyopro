@@ -5,36 +5,39 @@
 using namespace std;
 #include "data.hpp"
 
-template <class T>
-struct imos1d {
-    int n;
-    std::vector<T> imos;
+template<class T>
+struct imos2d {
+    int H, W;
+    std::vector<std::vector<T>> imos;
+    
+    imos2d (int h, int w) : H(h), W(w), imos(H + 1, std::vector<T>(W + 1, 0)) {}
 
-    imos1d(const int& n_) : n(n_), imos(n + 1, 0) {}
-
-    void add(const int& l, const int& r, const T& v) {
-        imos[l] += v;
-        imos[r + 1] -= v;
+    void add(int x1, int y1, int x2, int y2, T w) {
+        imos[x1][y1] += w;
+        imos[x1][y2] -= w;
+        imos[x2][y1] -= w;
+        imos[x2][y2] += w;
     }
 
-    std::vector<T> build() {
-        std::vector<T> res(n + 1, 0);
-        for (int i = 1; i <= n; i++) {
-            res[i] += imos[i - 1];
+    std::vector<std::vector<T>> build() {
+        std::vector<std::vector<T>> ps(H + 1, std::vector<T>(W + 1, 0));
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                ps[i + 1][j + 1] = imos[i][j] + ps[i][j + 1] + ps[i + 1][j] - ps[i][j];
+            }
         }
-        return res;
+        return ps;
     }
 };
 
-
 Result fast(const TestCase &tc) {
     Result out;
-    int N = tc.n, M = tc.m, Q = tc.q;
-    vector<tuple<int, int, int>> idx = tc.idx;
-    imos1d<int> imos(N);
-    for (int i = 0; i < M; i++) {
-        auto [l, r, w] = idx[i];
-        imos.add(l, r, w); 
+    int H = tc.H, W = tc.W, Q = tc.Q;
+    vector<tuple<int, int, int, int, int>> idx = tc.idx;
+
+    imos2d<int> imos(H, W);
+    for (auto& [x1, y1, x2, y2, w] : idx) {
+        imos.add(x1, y1, x2, y2, w);
     }
     out.ans = imos.build();
     return out;

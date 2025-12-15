@@ -3,14 +3,14 @@
 using namespace std;
 
 // tuple
-template<class tuple, size_t ... I>
-void print_tuple_impl(ostream& s, const tuple t, index_sequence<I...>) {
-    ((s << (I == 0 ? "\n" : " ") << get<I>(t)), ...);
+template<class Tuple, size_t... I>
+void print_tuple_impl(ostream& s, const Tuple& t, index_sequence<I...>) {
+    ((s << (I ? " " : "\n") << get<I>(t)), ...);
 }
 
-template<class... T>
-ostream& operator << (ostream& s, const tuple<T...>& t) {
-    print_tuple_impl(s, t, index_sequence_for<T...>{});
+template<class... Ts>
+ostream& operator << (ostream& s, const tuple<Ts...>& P) {
+    print_tuple_impl(s, P, index_sequence_for<Ts...>{});
     return s;
 }
 
@@ -28,9 +28,9 @@ template<class T> ostream& operator << (ostream& s, const array<T, 4>& P)
 
 // vector
 template<class T> ostream& operator << (ostream& s, const vector<T>& P)
-{ s << "\n"; for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
+{ for (int i = 0; i < P.size(); ++i) { if (i > 0) { s << " "; } s << P[i]; } return s; }
 template<class T> ostream& operator << (ostream& s, const vector<vector<T> >& P)
-{ for (int i = 0; i < P.size(); ++i) { s << P[i]; } return s; }
+{ for (int i = 0; i < P.size(); ++i) { s << "\n" << P[i]; } return s; }
 
 // deque
 template<class T> ostream& operator << (ostream& s, const deque<T>& P)
@@ -49,12 +49,3 @@ template<class T1, class T2> ostream& operator << (ostream& s, const map<T1,T2>&
 { for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
 template<class T1, class T2> ostream& operator << (ostream& s, const unordered_map<T1,T2>& P)
 { for (auto it : P) { s << "<" << it.first << "->" << it.second << "> "; } return s; }
-
-// tie()
-struct DebugPrintable {};
-
-template<class T>
-requires is_base_of_v<DebugPrintable, T>
-ostream& operator << (ostream& s, const T& t) {
-    return s << t.tie();
-}

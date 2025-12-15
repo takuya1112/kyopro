@@ -5,41 +5,38 @@ using namespace std;
 #include "debug_print.hpp"
 
 // 入力データの型を定義する
-struct TestCase : DebugPrintable {
-    int n, m, q;
-    vector<tuple<int, int, int>> idx;
-    
-    auto tie() const { return std::tie(n, m, q, idx); }
+struct TestCase {
+    int H, W, Q;
+    vector<tuple<int, int, int, int, int>> idx;
 };
 
-struct Result : DebugPrintable {
-    vector<int> ans;
-
-    auto tie() const { return std::tie(ans); }
+struct Result {
+    vector<vector<int>> ans;
 };
 
 inline bool operator == (const Result& a, const Result& b) {
-    return a.tie() == b.tie();
+    return a.ans == b.ans;
 }
 
 // WAの時の入力データを出力する関数
 void print_in(const TestCase& in) {
-    cout << in << "\n";
+    cout << in.H << " " << in.H << " " << in.Q << endl;
+    cout << in.idx << endl;
 }
 
 // WAの時の出力データを出力する関数
 void print_out(const Result& out) {
-    cout << out << "\n";
+    cout << out.ans << "\n";
 }
 
 // 入力データのランダム生成する関数
 RandomGen gen;
 TestCase random_case() {
     TestCase in;
-    in.n = gen.ri(1, 10);
-    in.m = gen.ri(1, 10);
-    in.q = gen.ri(1, 10);
+    in.H = gen.ri(1, 10);
+    in.W = gen.ri(1, 10);
+    in.Q = gen.ri(1, 10);
 
-    in.idx = gen.random_array_tuple(in.m, 0, in.n, 100);
+    in.idx = gen.random_array2d_tuple(in.Q, in.H, in.W, 100);
     return in;
 }

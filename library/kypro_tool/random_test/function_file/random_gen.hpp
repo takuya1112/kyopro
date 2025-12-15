@@ -74,9 +74,26 @@ struct RandomGen {
     }
 
     vector<tuple<int, int, int>> random_array_tuple(const int& n, const int& l, const int& r, const int& w) {
-        vector<tuple<int, int, int>> v(n);
-        for (auto& x : v) x = random_tuple_int_strict(l, r, w);
-        return v;
+        vector<tuple<int, int, int>> vec(n);
+        pair<int, int> x;
+        for (auto& v : vec) {
+            x = random_pair_int_strict(l, r);
+            int c = ri(0, w);
+            v = {x.first, x.second, c};
+        } 
+        return vec;
+    }
+
+    vector<tuple<int, int, int, int, int>> random_array2d_tuple(const int& n, const int& h, const int& w, const int& c) {
+        vector<tuple<int, int, int, int, int>> vec(n);
+        pair<int, int> x, y;
+        for (auto& v : vec) {
+            x = random_pair_int_strict(0, h);
+            y = random_pair_int_strict(0, w);
+            int cost = ri(0, c);
+            v = {x.first, y.first, x.second, y.second, cost};
+        }
+        return vec;
     }
 
     // ランダム文字列
@@ -99,14 +116,6 @@ struct RandomGen {
         int a = ri(l, r - 1);
         int b = ri(a + 1, r);
         return {a, b};
-    }
-
-    // ランダム重み付きペア
-    tuple<int, int, int> random_tuple_int_strict(const int&l, const int& r, const int& w) {
-        int a = ri(l, r - 1);
-        int b = ri(a + 1, r);
-        int c = ri(0, w);
-        return {a, b, c};
     }
 
     // ランダムグラフ
@@ -201,6 +210,30 @@ struct RandomGen {
             int w = ri(low, high);
             e.push_back({p, i, w});
         }
+        shuffle(e.begin(), e.end(), rng);
+        return e;
+    }
+
+    // サイクル
+    vector<pair<int, int>> random_one_cycle(int& n) {
+        if (n < 3) n = 3;
+        vector<pair<int, int>> e;
+        set<pair<int, int>> used;
+        for (int i = 1; i < n; i++) {
+            int p = ri(0, i-1);
+            used.insert({p, i});
+            e.push_back({p, i}); 
+        }
+
+        pair<int, int> p;
+        while (true) {
+            p = random_pair_int_strict(0, n - 1);
+            if (used.insert(p).second) {
+                e.push_back(p);
+                break;
+            }
+        }
+
         shuffle(e.begin(), e.end(), rng);
         return e;
     }

@@ -1,6 +1,7 @@
-// imos_1d(n, operations)の形で使用し
-// lに+v,r+1に-v, することでそれぞれの区間の区間和が求まる
-// 重みがないならtupleの３個目要に１を入れる
+// imos1d<int> imos(n)の形で初期化し
+// imos.add(l, r, w) 半開区間[l, r)に+wをする
+// imos.build() で累積和を返す
+// l に+ w, r に- wして累積和をとることで半開区間[l, r)への区間加算の総和を高速に求める
 
 #pragma once
 #include <vector>
@@ -12,16 +13,18 @@ struct imos1d {
 
     imos1d(const int& n_) : n(n_), imos(n + 1, 0) {}
 
-    void add(const int& l, const int& r, const T& v) {
-        imos[l] += v;
-        imos[r + 1] -= v;
+    void add(const int& l, const int& r, const T& w) {
+        imos[l] += w;
+        imos[r] -= w;
     }
 
     std::vector<T> build() {
-        std::vector<T> res(n + 1, 0);
-        for (int i = 1; i <= n; i++) {
-            res[i] += imos[i - 1];
+        std::vector<T> ps(n + 1, 0);
+        T cur = T{};
+        for (int i = 0; i < n; i++) {
+            cur += imos[i];
+            ps[i] = cur;
         }
-        return res;
+        return ps;
     }
 };

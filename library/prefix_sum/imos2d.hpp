@@ -1,38 +1,33 @@
-// imos_2d(H, W, operations)の形で使用し
-// 長方形(x1, y1)、(x2, y2)の左上に+v ([x1][y1] += v)、
-// 右上+1 に-v ([x1][y2 + 1] -= v), 左下+1 に -v ([x2 + 1][y1] -= v),
-// 最後にマイナスの被ってる右下+1　に + v ([x2 + 1][y2 + 1] += v),
-// することで長方形のそれぞれの区間の区間和が求まる
-// 重みがないならtupleの５個目の要素に１を入れる
+// imos2d<int> imos(h, w)の形で初期化し
+// imos.add(x1, y1, x2, y2, w) で半開区間の長方形領域[x1, x2) * [y1, y2)に+wをする
+// imos.build() で累積和を返す
+// 累積和をとることで半開区間の長方形領域[x1, x2) * [y1, y2)への区間加算の総和を高速に求める 
 
 #pragma once
 #include <vector>
 #include <tuple>
 
 template<class T>
-std::vector<std::vector<T>> imos_2d(int H, int W, const std::vector<std::tuple<int, int, int, int, T>>& operations) {
-    std::vector<std::vector<T>> imos(H + 1, std::vector<T>(W + 1, 0));
+struct imos2d {
+    int H, W;
+    std::vector<std::vector<T>> imos;
     
-    for (auto &[x1, y1, x2, y2, v] : operations) {
-        imos[x1][y1] += v;
-        imos[x1][y2 + 1] -= v;
-        imos[x2 + 1][y1] -= v;
-        imos[x2 + 1][y2 + 1] += v;
+    imos2d (int h, int w) : H(h), W(w), imos(H + 1, std::vector<T>(W + 1, 0)) {}
+
+    void add(int x1, int y1, int x2, int y2, T w) {
+        imos[x1][y1] += w;
+        imos[x1][y2] -= w;
+        imos[x2][y1] -= w;
+        imos[x2][y2] += w;
     }
 
-    for (int i = 0; i <= H; i++) {
-        for (int j = 1; j <= W; j++) {
-            imos[i][j] += imos[i][j - 1];
+    std::vector<std::vector<T>> build() {
+        std::vector<std::vector<T>> ps(H + 1, std::vector<T>(W + 1, 0));
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                ps[i + 1][j + 1] = imos[i][j] + ps[i][j + 1] + ps[i + 1][j] - ps[i][j];
+            }
         }
+        return ps;
     }
-
-    for (int j = 0; j <= W; j++) {
-        for (int i = 1; i <= H; i++) {
-            imos[i][j] += imos[i - 1][j];
-        }
-    }
-
-    imos.resize(H);
-    for (auto &row : imos) row.resize(W);
-    return imos;
-}
+};

@@ -1,13 +1,12 @@
 // cycle_detection(s, graph)の形で使用し
-// cycleをgraphの中から見つけsetで返す
+// サイクルを1個見つけて,そのサイクルに含まれている各要素を判定する
 // graph は隣接リストで持つ
 
 #pragma once
 #include <vector>
 #include <stack>
-#include <set>
 
-std::set<int> cycle_detection(int s, const std::vector<std::vector<int>>& graph) {
+std::vector<int> cycle_detection(int s, const std::vector<std::vector<int>>& graph) {
     int N = graph.size();
     std::vector<int> seen(N), finished(N);
 
@@ -33,10 +32,10 @@ std::set<int> cycle_detection(int s, const std::vector<std::vector<int>>& graph)
 
     dfs(dfs, s, -1);
 
-    std::set<int> cycle;
+    std::vector<int> cycle(N);
     while (!hist.empty()) {
         int t = hist.top();
-        cycle.insert(t);
+        cycle[t] = 1;
         hist.pop();
         if (t == pos) break;
     }

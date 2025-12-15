@@ -109,6 +109,6 @@ struct RandomTester {
 
 int main() {
     RandomTester<TestCase, Result> tester(random_case, fast, naive, print_in, print_out);
-    tester.execution_time();
+    tester.run();
     return 0;
 }

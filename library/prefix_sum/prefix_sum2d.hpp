@@ -1,5 +1,5 @@
 // prefix_sum2d ps(a)で初期化し
-// ps.sum(x1, y1, x2, y2) で半開区間[x1, x2) * [y1, y2)の総和を求める
+// ps.sum(x1, y1, x2, y2) で半開区間の長方形領域[x1, x2) * [y1, y2)の総和を求める
 
 #pragma once
 #include <vector>
