@@ -28,7 +28,7 @@ std::vector<long long> dijkstra(int s, const std::vector<std::vector<std::pair<i
         pq.pop();
         if (dist[u] < d) continue;
         for (auto [v, c] : graph[u]) {
-            int nc = d + c;
+            long long nc = d + c;
             if (dist[v] > nc) {
                 dist[v] = nc;
                 pq.push({nc, v});
