@@ -7,44 +7,51 @@
 #include <numeric>
 
 // RMQ Range_Minimum_Query
-int op_min(int a, int b) { return std::min(a, b); }
-int e_min() { return INT_MAX; }
+// using S = int;
+// S op_min(S a, S b) { return std::min(a, b); }
+// S e_min() { return INT_MAX; }
 
-using SegRMQ = segtree<int, op_min, e_min>;
+// using SegRMQ = segtree<S, op_min, e_min>;
 
 // RMQ Range_Maximum_Query
-int op_max(int a, int b) { return std::max(a, b); }
-int e_max() { return INT_MIN; }
+// using S = int;
+// S op_max(S a, S b) { return std::max(a, b); }
+// S e_max() { return INT_MIN; }
 
-using SegRMax = segtree<int, op_max, e_max>;
+// using SegRMax = segtree<S, op_max, e_max>;
 
 // RSQ Range_Sum_Query
-long long op_sum(long long a, long long b) { return a + b; }
-long long e_sum() { return 0LL; }
+// using S = long long;
+// S op_sum(S a, S b) { return a + b; }
+// S e_sum() { return 0LL; }
 
-using SegRSQ = segtree<long long, op_sum, e_sum>;
+// using SegRSQ = segtree<S, op_sum, e_sum>;
 
 // GCD
-int op_gcd(int a, int b) { return std::gcd(a, b); }
-int e_gcd() { return 0; }
+// using S = int;
+// S op_gcd(S a, S b) { return std::gcd(a, b); }
+// S e_gcd() { return 0; }
 
-using SegGCD = segtree<int, op_gcd, e_gcd>;
+// using SegGCD = segtree<S, op_gcd, e_gcd>;
 
 // OR
-int op_or(int a, int b) { return a | b; }
-int e_or() { return 0; }
+// using S = int;
+// S op_or(S a, S b) { return a | b; }
+// S e_or() { return 0; }
 
-using SegOR = segtree<int, op_or, e_or>;
+// using SegOR = segtree<S, op_or, e_or>;
 
 // AND
-int op_and(int a, int b) { return a & b; }
-int e_and() { return 0; }
+// using S = int;
+// S op_and(S a, S b) { return a & b; }
+// S e_and() { return 0; }
 
-using SegAND = segtree<int, op_and, e_and>;
+// using SegAND = segtree<S, op_and, e_and>;
 
 // XOR
-int op_xor(int a, int b) { return a ^ b; }
-int e_xor() { return 0; }
+// using S = int;
+// S op_xor(S a, S b) { return a ^ b; }
+// S e_xor() { return 0; }
 
-using SegXOR = segtree<int, op_xor, e_xor>;
+// using SegXOR = segtree<S, op_xor, e_xor>;
 
