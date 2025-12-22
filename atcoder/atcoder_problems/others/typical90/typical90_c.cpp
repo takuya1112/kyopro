@@ -157,25 +157,56 @@ const ll LINF = 4e18;
 //                  solve
 // ========================================
 
-void solve() {
-    int H, W;
-    read(H, W);
-    vvi A(H, vi(W));
-    rep(i, H) read(A[i]);
+vi dfs(const vvi & G, int s) {
+    int N = G.size();
 
-    vi yoko(H, 0);
-    vi tate(W, 0);
-    rep(i, H) rep(j, W) {
-        yoko[i] += A[i][j];
-        tate[j] += A[i][j];
-    }
+    vi dist(N, -1);
+    dist[s] = 0;
 
-    rep(i, H) {
-        rep(j, W) {
-            cout << yoko[i] + tate[j] - A[i][j] << " ";
+    stack<int> st({s});
+    while (!st.empty()) {
+        int v = st.top();
+        st.pop();
+        for (auto nv : G[v]) {
+            if (dist[nv] == -1) {
+                st.push(nv);
+                dist[nv] = dist[v] + 1;
+            }
         }
-        cout << "\n";
     }
+
+    return dist;
+}
+
+void solve() {
+    int N;
+    read(N);
+
+    vvi G(N);
+    rep(i, N - 1) {
+        int a, b; read(a, b);
+        a--; b--;
+        G[a].pb(b);
+        G[b].pb(a);
+    }
+
+    auto dist0 = dfs(G, 0);
+
+    int mx = -1, mv = -1;
+    rep(v, N) {
+        if (mx < dist0[v]) {
+            mx = dist0[v];
+            mv = v;
+        }
+    }
+
+    auto distmv = dfs(G, mv);
+    mx = -1;
+    rep(v, N) {
+        mx = max(mx, distmv[v]);
+    }
+
+    print(mx + 1);
 }
 
 int main() {
@@ -185,76 +216,42 @@ int main() {
 }
 
 // mycode AC
-// void solve() {
-//     int H, W;
-//     read(H, W);
-//     vvi A(H, vi(W)), B(H, vi(W));
-//     rep(i, H) read(A[i]);
-    
-//     vi col(H), row(W);
-//     rep(i, H) rep(j, W) {
-//         col[i] += A[i][j];
-//         row[j] += A[i][j];
-//     }   
+// pii dfs_tree(int root, const std::vector<std::vector<int>>& graph) {
+//     int N = graph.size();
+//     std::vector<int> depth(N);
+//     pii mx = mp(0, root);
 
-//     rep(i, H) rep(j, W) {
-//         B[i][j] += col[i] + row[j] - A[i][j];
+//     auto dfs = [&](auto& self, int v, int p, int d) -> void {
+//         depth[v] = d;
+//         mx = max(mx, mp(d, v));
+//         for (auto &u : graph[v]) {
+//             if (u == p) continue;
+//             self(self, u, v, d + 1);
+//         }
+//     };
+//     dfs(dfs, root, -1, 0);
+//     return mx;
+// }
+
+// void solve() {
+//     int N;
+//     read(N);
+//     vvi graph(N);
+//     rep(i, N - 1) {
+//         int a, b;
+//         read(a, b);
+//         a--; b--;
+//         graph[a].pb(b);
+//         graph[b].pb(a);
 //     }
-//     rep(i, H) print(B[i]);
+
+//     pii u = dfs_tree(0, graph);
+//     pii v = dfs_tree(u.se, graph);
+//     print(v.fi + 1);
 // }
 
 // int main() {
 //     int t = 1;
 //     while (t--) solve();
-//     return 0;
-// }
-
-// #include <bits/stdc++.h>
-// using namespace std;
-// #include <atcoder/all>
-// using namespace atcoder;
-// #define rep(i,a,b) for(int i = a; i < b; i++)
-// #define rrep(i,a,b) for(int i = a; i >= b; i--)
-// #define all(x) (x).begin(),(x).end()
-// typedef long long ll; const int inf = INT_MAX / 2;
-
-// int main() {
-//     int H, W;
-//     cin >> H >> W;
-//     int A[H][W];
-//     rep(i, 0, H) rep(j, 0, W) {
-//         cin >> A[i][j];
-//     }
-
-//     vector<vector<int>> B(H, vector<int>(W));
-//     rep(i, 0, H) {
-//         int row_s = 0;
-//         rep(j, 0, W) {
-//             row_s += A[i][j];
-
-//         }
-//         rep(j, 0, W) {
-//             B[i][j] += row_s;
-//         }
-//     }
-
-//     rep(i, 0, W) {
-//         int col_s = 0;
-//         rep(j, 0, H) {
-//             col_s += A[j][i];
-//         }
-
-//         rep(j, 0, H) {
-//             B[j][i] += col_s;
-//         }
-//     }
-
-//     rep(i, 0, H) {
-//         rep(j, 0, W) {
-//             if (j) cout << " ";
-//             cout << B[i][j] - A[i][j]; 
-//         }
-//         cout << '\n';
-//     }
 //     return 0;
 // }

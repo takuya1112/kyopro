@@ -147,7 +147,7 @@ void print(const T& a, const Ts&... b) {
 
 // --- modular ---
 // using mint = modint998244353;
-// using mint = modint1000000007;
+using mint = modint1000000007;
 
 // --- constants ---
 const int INF = 1e9;
@@ -157,25 +157,25 @@ const ll LINF = 4e18;
 //                  solve
 // ========================================
 
+const string T = "atcoder";
+
 void solve() {
-    int H, W;
-    read(H, W);
-    vvi A(H, vi(W));
-    rep(i, H) read(A[i]);
+    int N; string S;
+    read(N, S);
+    
+    vector<vector<mint>> dp(N + 1, vector<mint>(T.size() + 1, 0));
+    dp[0][0] = 1;
 
-    vi yoko(H, 0);
-    vi tate(W, 0);
-    rep(i, H) rep(j, W) {
-        yoko[i] += A[i][j];
-        tate[j] += A[i][j];
-    }
-
-    rep(i, H) {
-        rep(j, W) {
-            cout << yoko[i] + tate[j] - A[i][j] << " ";
+    rep(i, N) {
+        rep(j, T.size() + 1) {
+            dp[i + 1][j] += dp[i][j];
+            if (j < T.size() && S[i] == T[j]) {
+                dp[i + 1][j + 1] += dp[i][j];
+            }
         }
-        cout << "\n";
     }
+
+    print(dp[N][T.size()].val());
 }
 
 int main() {
@@ -186,75 +186,31 @@ int main() {
 
 // mycode AC
 // void solve() {
-//     int H, W;
-//     read(H, W);
-//     vvi A(H, vi(W)), B(H, vi(W));
-//     rep(i, H) read(A[i]);
-    
-//     vi col(H), row(W);
-//     rep(i, H) rep(j, W) {
-//         col[i] += A[i][j];
-//         row[j] += A[i][j];
-//     }   
+//     int N; string S;
+//     read(N, S);
 
-//     rep(i, H) rep(j, W) {
-//         B[i][j] += col[i] + row[j] - A[i][j];
+//     mint ans = 0;
+//     vector<mint> v(N);
+//     rep(i, N) if (S[i] == 'r') v[i] += 1;
+
+//     string T = "atcoder";
+//     reverse(all(T));
+
+//     rep2(i, 1, 7) {
+//         mint sum = 0;
+//         rrep(j, N) {
+//             if (T[i] == S[j]) {
+//                 v[j] += sum;
+//             }
+//             if (T[i-1] == S[j]) sum += v[j]; 
+//         }
 //     }
-//     rep(i, H) print(B[i]);
+//     rep(i, N) if (S[i] == 'a') ans += v[i];
+//     print(ans.val());
 // }
 
 // int main() {
 //     int t = 1;
 //     while (t--) solve();
-//     return 0;
-// }
-
-// #include <bits/stdc++.h>
-// using namespace std;
-// #include <atcoder/all>
-// using namespace atcoder;
-// #define rep(i,a,b) for(int i = a; i < b; i++)
-// #define rrep(i,a,b) for(int i = a; i >= b; i--)
-// #define all(x) (x).begin(),(x).end()
-// typedef long long ll; const int inf = INT_MAX / 2;
-
-// int main() {
-//     int H, W;
-//     cin >> H >> W;
-//     int A[H][W];
-//     rep(i, 0, H) rep(j, 0, W) {
-//         cin >> A[i][j];
-//     }
-
-//     vector<vector<int>> B(H, vector<int>(W));
-//     rep(i, 0, H) {
-//         int row_s = 0;
-//         rep(j, 0, W) {
-//             row_s += A[i][j];
-
-//         }
-//         rep(j, 0, W) {
-//             B[i][j] += row_s;
-//         }
-//     }
-
-//     rep(i, 0, W) {
-//         int col_s = 0;
-//         rep(j, 0, H) {
-//             col_s += A[j][i];
-//         }
-
-//         rep(j, 0, H) {
-//             B[j][i] += col_s;
-//         }
-//     }
-
-//     rep(i, 0, H) {
-//         rep(j, 0, W) {
-//             if (j) cout << " ";
-//             cout << B[i][j] - A[i][j]; 
-//         }
-//         cout << '\n';
-//     }
 //     return 0;
 // }

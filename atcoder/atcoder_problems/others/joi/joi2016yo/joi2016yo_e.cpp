@@ -157,104 +157,178 @@ const ll LINF = 4e18;
 //                  solve
 // ========================================
 
-void solve() {
-    int H, W;
-    read(H, W);
-    vvi A(H, vi(W));
-    rep(i, H) read(A[i]);
+int N, M, K, S, P, Q;
+vi E[101010];
+bool zombie[101010];
 
-    vi yoko(H, 0);
-    vi tate(W, 0);
-    rep(i, H) rep(j, W) {
-        yoko[i] += A[i][j];
-        tate[j] += A[i][j];
-    }
+bool danger[101010];
+int dist[101010];
 
-    rep(i, H) {
-        rep(j, W) {
-            cout << yoko[i] + tate[j] - A[i][j] << " ";
+void bfs() {
+    queue<int> que;
+
+    rep(i, N) {
+        if (zombie[i]) {
+            dist[i] = 0;
+            que.push(i);
         }
-        cout << "\n";
+        else dist[i] = -1;
     }
+
+    while (!que.empty()) {
+        int cu = que.front(); que.pop();
+
+        for (auto to : E[cu]) {
+            if (dist[to] < 0) {
+                dist[to] = dist[cu] + 1;
+                que.push(to);
+            }
+        }
+    }
+
+    rep(i, N) if (1 <= dist[i] && dist[i] <= S) danger[i] = true;
+}
+
+bool vis[101010];
+ll D[101010];
+ll dijk() {
+    rep(i, N) D[i] = LINF;
+    rep(i, N) vis[i] = false;
+
+    pq_m<pair<ll, int>> que;
+
+    D[0] = 0;
+    que.push({0, 0});
+    
+    while (!que.empty()) {
+        auto q = que.top(); que.pop();
+
+        ll cst = q.fi;
+        int cu = q.se;
+
+        if (cu == N - 1) {
+            if (danger[cu]) return cst - Q;
+            else return cst - P;
+        }
+
+        if (vis[cu]) continue;
+        vis[cu] = 1;
+
+        for (auto to : E[cu]) {
+            if (zombie[to]) continue;
+
+            ll cst2 = cst;
+            
+            if (danger[to]) cst2 += Q;
+            else cst2 += P;
+
+            if (chmin(D[to], cst2)) que.push({D[to], to});
+        }
+    }
+
+    return -1;
+}
+
+void solve() {
+    read(N, M, K, S, P, Q);
+    rep(i, K) {
+        int c; read(c); c--;
+        zombie[c] = true;
+    }
+
+    rep(i, M) {
+        int a, b; read(a, b); a--; b--;
+        E[a].pb(b);
+        E[b].pb(a);
+    }
+    bfs();
+    print(dijk());
 }
 
 int main() {
     int t = 1;
     while (t--) solve();
-    return 0;
 }
 
 // mycode AC
 // void solve() {
-//     int H, W;
-//     read(H, W);
-//     vvi A(H, vi(W)), B(H, vi(W));
-//     rep(i, H) read(A[i]);
-    
-//     vi col(H), row(W);
-//     rep(i, H) rep(j, W) {
-//         col[i] += A[i][j];
-//         row[j] += A[i][j];
-//     }   
+//     int N, M, K, S, P, Q;
+//     read(N, M, K, S, P, Q);
+//     vi C(N);
+//     rep(i, K) {
+//         int c;
+//         read(c); c--;
+//         C[c] = true;
+//     };
 
-//     rep(i, H) rep(j, W) {
-//         B[i][j] += col[i] + row[j] - A[i][j];
+//     vvi g(N);
+//     rep(i, M) {
+//         int a, b;
+//         read(a, b);
+//         a--; b--;
+//         g[a].pb(b);
+//         g[b].pb(a);
 //     }
-//     rep(i, H) print(B[i]);
+
+//     vi infected(N);
+//     rep(i, N) {
+//         if (!C[i]) continue;
+//         std::vector<int> dist(N, -1);
+//         dist[i] = 0;
+//         infected[i] = true;
+        
+//         queue<int> que;
+//         que.push(i);
+
+//         while (!que.empty()) {
+//             int u = que.front();
+//             que.pop();
+//             for (int& v : g[u]) {
+//                 if (v == 0 || v == N - 1) continue;
+//                 if (dist[v] != -1) continue;
+//                 dist[v] = dist[u] + 1;
+//                 if (dist[v] <= S) {
+//                     infected[v] = true;
+//                     que.push(v);
+//                 }
+//             }
+//         }
+//     }
+
+//     auto dijkstra = [&](int s, const std::vector<std::vector<int>>& graph) -> void {
+//         std::vector<long long> dist(N, LINF);
+//         dist[s] = 0;
+
+//         std::priority_queue<
+//             std::pair<long long, int>, 
+//             std::vector<std::pair<long long, int>>,
+//             std::greater<std::pair<long long, int>>
+//         > pq;
+//         pq.push({0, s});
+
+//         while (!pq.empty()) {
+//             auto [d, u] = pq.top();
+//             pq.pop();
+//             if (dist[u] < d) continue;
+//             for (int v : graph[u]) {
+//                 if (C[v]) continue;
+//                 long long nc = d;
+//                 if (infected[v]) nc += Q;
+//                 else nc += P;
+//                 if (dist[v] > nc) {
+//                     dist[v] = nc;
+//                     pq.push({nc, v});
+//                 }
+//             }
+//         }
+//         print(dist[N-1] - P);
+//     };
+
+//     dijkstra(0, g);
 // }
 
 // int main() {
 //     int t = 1;
 //     while (t--) solve();
-//     return 0;
-// }
-
-// #include <bits/stdc++.h>
-// using namespace std;
-// #include <atcoder/all>
-// using namespace atcoder;
-// #define rep(i,a,b) for(int i = a; i < b; i++)
-// #define rrep(i,a,b) for(int i = a; i >= b; i--)
-// #define all(x) (x).begin(),(x).end()
-// typedef long long ll; const int inf = INT_MAX / 2;
-
-// int main() {
-//     int H, W;
-//     cin >> H >> W;
-//     int A[H][W];
-//     rep(i, 0, H) rep(j, 0, W) {
-//         cin >> A[i][j];
-//     }
-
-//     vector<vector<int>> B(H, vector<int>(W));
-//     rep(i, 0, H) {
-//         int row_s = 0;
-//         rep(j, 0, W) {
-//             row_s += A[i][j];
-
-//         }
-//         rep(j, 0, W) {
-//             B[i][j] += row_s;
-//         }
-//     }
-
-//     rep(i, 0, W) {
-//         int col_s = 0;
-//         rep(j, 0, H) {
-//             col_s += A[j][i];
-//         }
-
-//         rep(j, 0, H) {
-//             B[j][i] += col_s;
-//         }
-//     }
-
-//     rep(i, 0, H) {
-//         rep(j, 0, W) {
-//             if (j) cout << " ";
-//             cout << B[i][j] - A[i][j]; 
-//         }
-//         cout << '\n';
-//     }
 //     return 0;
 // }

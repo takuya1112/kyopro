@@ -3,8 +3,6 @@
 #endif
 #include <bits/stdc++.h>
 using namespace std;
-#include <atcoder/all>
-using namespace atcoder;
 
 // --- utility ---
 using pii = pair<int, int>; using pll = pair<long long, long long>;
@@ -157,25 +155,40 @@ const ll LINF = 4e18;
 //                  solve
 // ========================================
 
-void solve() {
-    int H, W;
-    read(H, W);
-    vvi A(H, vi(W));
-    rep(i, H) read(A[i]);
+std::vector<std::vector<int>> calc_next(const std::string &S) {
+    int N = (int)S.size();
 
-    vi yoko(H, 0);
-    vi tate(W, 0);
-    rep(i, H) rep(j, W) {
-        yoko[i] += A[i][j];
-        tate[j] += A[i][j];
+    std::vector<std::vector<int>> res(N + 1, std::vector<int>(26, N));
+
+    for (int i = N - 1; i >= 0; i--) {
+        for (int j = 0; j < 26; j++) res[i][j] = res[i + 1][j];
+        res[i][S[i] - 'a'] = i;
     }
+    return res;
+}
 
-    rep(i, H) {
-        rep(j, W) {
-            cout << yoko[i] + tate[j] - A[i][j] << " ";
+std::string ss(const std::string& S, const int& N, const int& K) {
+    std::string res = "";
+    auto next = calc_next(S);
+
+    int j = -1;
+    for(int i = 0; i < K; i++) {
+        for (char c = 'a'; c <= 'z'; c++) {
+            int k = next[j + 1][c - 'a'];
+
+            if (N - k >= K - i) {
+                res += c;
+                j = k;
+                break;
+            }
         }
-        cout << "\n";
     }
+    return res;
+}
+void solve() {
+    int N, K; string S;
+    read(N, K, S);
+    print(ss(S, N, K));
 }
 
 int main() {
@@ -183,78 +196,3 @@ int main() {
     while (t--) solve();
     return 0;
 }
-
-// mycode AC
-// void solve() {
-//     int H, W;
-//     read(H, W);
-//     vvi A(H, vi(W)), B(H, vi(W));
-//     rep(i, H) read(A[i]);
-    
-//     vi col(H), row(W);
-//     rep(i, H) rep(j, W) {
-//         col[i] += A[i][j];
-//         row[j] += A[i][j];
-//     }   
-
-//     rep(i, H) rep(j, W) {
-//         B[i][j] += col[i] + row[j] - A[i][j];
-//     }
-//     rep(i, H) print(B[i]);
-// }
-
-// int main() {
-//     int t = 1;
-//     while (t--) solve();
-//     return 0;
-// }
-
-// #include <bits/stdc++.h>
-// using namespace std;
-// #include <atcoder/all>
-// using namespace atcoder;
-// #define rep(i,a,b) for(int i = a; i < b; i++)
-// #define rrep(i,a,b) for(int i = a; i >= b; i--)
-// #define all(x) (x).begin(),(x).end()
-// typedef long long ll; const int inf = INT_MAX / 2;
-
-// int main() {
-//     int H, W;
-//     cin >> H >> W;
-//     int A[H][W];
-//     rep(i, 0, H) rep(j, 0, W) {
-//         cin >> A[i][j];
-//     }
-
-//     vector<vector<int>> B(H, vector<int>(W));
-//     rep(i, 0, H) {
-//         int row_s = 0;
-//         rep(j, 0, W) {
-//             row_s += A[i][j];
-
-//         }
-//         rep(j, 0, W) {
-//             B[i][j] += row_s;
-//         }
-//     }
-
-//     rep(i, 0, W) {
-//         int col_s = 0;
-//         rep(j, 0, H) {
-//             col_s += A[j][i];
-//         }
-
-//         rep(j, 0, H) {
-//             B[j][i] += col_s;
-//         }
-//     }
-
-//     rep(i, 0, H) {
-//         rep(j, 0, W) {
-//             if (j) cout << " ";
-//             cout << B[i][j] - A[i][j]; 
-//         }
-//         cout << '\n';
-//     }
-//     return 0;
-// }

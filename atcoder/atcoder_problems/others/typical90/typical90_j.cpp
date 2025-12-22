@@ -157,24 +157,31 @@ const ll LINF = 4e18;
 //                  solve
 // ========================================
 
-void solve() {
-    int H, W;
-    read(H, W);
-    vvi A(H, vi(W));
-    rep(i, H) read(A[i]);
+int N;
+int C[100009], P[100009];
+int Q;
+int L[100009], R[100009];
 
-    vi yoko(H, 0);
-    vi tate(W, 0);
-    rep(i, H) rep(j, W) {
-        yoko[i] += A[i][j];
-        tate[j] += A[i][j];
+int sum1[100009];
+int sum2[100009];
+
+void solve() {
+    read(N);
+    rep2(i, 1, N+1) read(C[i], P[i]);
+    read(Q);
+    rep2(i, 1, Q+1) read(L[i], R[i]);
+
+    rep2(i, 1, N + 1) {
+        sum1[i] = sum1[i - 1];
+        sum2[i] = sum2[i - 1];
+        if (C[i] == 1) sum1[i] += P[i];
+        if (C[i] == 2) sum2[i] += P[i];
     }
 
-    rep(i, H) {
-        rep(j, W) {
-            cout << yoko[i] + tate[j] - A[i][j] << " ";
-        }
-        cout << "\n";
+    rep2(i, 1, Q + 1) {
+        int ans1 = sum1[R[i]] - sum1[L[i] - 1];
+        int ans2 = sum2[R[i]] - sum2[L[i] - 1];
+        print(ans1, ans2);
     }
 }
 
@@ -186,75 +193,32 @@ int main() {
 
 // mycode AC
 // void solve() {
-//     int H, W;
-//     read(H, W);
-//     vvi A(H, vi(W)), B(H, vi(W));
-//     rep(i, H) read(A[i]);
-    
-//     vi col(H), row(W);
-//     rep(i, H) rep(j, W) {
-//         col[i] += A[i][j];
-//         row[j] += A[i][j];
-//     }   
-
-//     rep(i, H) rep(j, W) {
-//         B[i][j] += col[i] + row[j] - A[i][j];
+//     int N;
+//     read(N);
+//     vvi C(2, vi(N + 1));
+//     for (int i = 1; i <= N; i++) {
+//         int c, p;
+//         read(c, p);
+//         c--;
+//         C[c][i] = p;
 //     }
-//     rep(i, H) print(B[i]);
+
+//     rep(i, 2) rep(j, N) {
+//         C[i][j + 1] = C[i][j] + C[i][j + 1];
+//     } 
+    
+//     int Q;
+//     read(Q);
+//     rep(qi, Q) {
+//         int a, b;
+//         read(a, b);
+//         a--;
+//         print(C[0][b] - C[0][a], C[1][b] - C[1][a]);
+//     }
 // }
 
 // int main() {
 //     int t = 1;
 //     while (t--) solve();
-//     return 0;
-// }
-
-// #include <bits/stdc++.h>
-// using namespace std;
-// #include <atcoder/all>
-// using namespace atcoder;
-// #define rep(i,a,b) for(int i = a; i < b; i++)
-// #define rrep(i,a,b) for(int i = a; i >= b; i--)
-// #define all(x) (x).begin(),(x).end()
-// typedef long long ll; const int inf = INT_MAX / 2;
-
-// int main() {
-//     int H, W;
-//     cin >> H >> W;
-//     int A[H][W];
-//     rep(i, 0, H) rep(j, 0, W) {
-//         cin >> A[i][j];
-//     }
-
-//     vector<vector<int>> B(H, vector<int>(W));
-//     rep(i, 0, H) {
-//         int row_s = 0;
-//         rep(j, 0, W) {
-//             row_s += A[i][j];
-
-//         }
-//         rep(j, 0, W) {
-//             B[i][j] += row_s;
-//         }
-//     }
-
-//     rep(i, 0, W) {
-//         int col_s = 0;
-//         rep(j, 0, H) {
-//             col_s += A[j][i];
-//         }
-
-//         rep(j, 0, H) {
-//             B[j][i] += col_s;
-//         }
-//     }
-
-//     rep(i, 0, H) {
-//         rep(j, 0, W) {
-//             if (j) cout << " ";
-//             cout << B[i][j] - A[i][j]; 
-//         }
-//         cout << '\n';
-//     }
 //     return 0;
 // }
