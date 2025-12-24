@@ -1,9 +1,3 @@
-// lowest common ancestor(最小共通祖先)
-// lca anc(graph, root)の形で使用し
-// anc.find(u, v) でuとvの最小共通祖先を調べる
-// graphは隣接リストで渡す
-
-
 #pragma once
 #include <vector>
 
@@ -55,3 +49,67 @@ struct lca {
         return parent[0][u];
     }
 };
+
+
+/** 
+ * lowest common ancestor(最小共通祖先)
+ * 
+ * 根付き木に対し2頂点 u, v の共通祖先で最も近いものを求める
+ * ダブリング（倍増法）を用いた実装
+ * 
+ * Verified: 
+ * - https://judge.yosupo.jp/problem/lca
+ * 
+ * Operations:
+ * - Constructor: 前処理 O(N log N)
+ * - find(u, v) 2頂点 u, v の LCA を返す O(log N)
+ * 
+ * Space: O(N log N)
+*/
+
+
+//------------------------------//
+// Usage Examples
+//------------------------------//
+
+// Example 1: Basic Usage
+// int main() {
+//     // 木の構造:
+//     //       0
+//     //      / \
+//     //     1   2
+//     //        / \
+//     //       3   4
+//     vector<vector<int>> graph(5);
+//     graph[0] = {1, 2};
+//     graph[1] = {0};
+//     graph[2] = {0, 3, 4};
+//     graph[3] = {2};
+//     graph[4] = {2};
+// 
+//     lca tree(graph, 0);
+//     cout << tree.find(1, 2) << endl; // 0
+//     cout << tree.find(3, 4) << endl; // 2
+//     cout << tree.find(1, 4) << endl; // 0
+// }
+
+// Example 2: Library Checker - LCA
+// https://judge.yosupo.jp/problem/lca
+// int main() {
+//     int N, Q;
+//     cin >> N >> Q;
+//     vector<vector<int>> graph(N);
+//     for (int i = 1; i < N; i++) {
+//         int p;
+//         cin >> p;
+//         graph[p].push_back(i);
+//         graph[i].push_back(p);
+//     }
+
+//     lca tree(graph, 0);
+//     for (int i = 0; i < Q; i++) {
+//         int u, v;
+//         cin >> u >> v;
+//         cout << tree.find(u, v) << endl;
+//     } 
+// }

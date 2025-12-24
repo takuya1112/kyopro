@@ -43,9 +43,9 @@ struct dsu {
  * - https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/1/DSL_1_A
  * 
  * Operations:
- * - find(x): xの根を返す O(α(n))
- * - unite(x, y) xとyを同じ集合にする O(a(n))
- * - same(x, y) xとyが同じ集合か判定する O(a(n))
+ * - find(x): xの根を返す O(α(N))
+ * - unite(x, y) xとyを同じ集合にする O(a(N))
+ * - same(x, y) xとyが同じ集合か判定する O(a(N))
 */
 
 
