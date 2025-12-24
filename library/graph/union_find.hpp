@@ -1,7 +1,3 @@
-// dsu uf(N)の形で使用し
-// uf.unite(x, y) でXの集合とYの集合を繋げる(分割はできない)
-// uf.same(x, y)でXとYが同じ集合にいるのか調べる
-
 #pragma once
 #include <vector>
 
@@ -34,3 +30,56 @@ struct dsu {
         return find(x) == find(y);
     }
 };
+
+
+/** 
+ * Union-Find
+ * 
+ * データを互いに素な集合に分類して管理するためのデータ構造
+ * 併合は出来るが分割は出来ない
+ * 
+ * Verified: 
+ * - https://judge.yosupo.jp/problem/unionfind
+ * - https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/1/DSL_1_A
+ * 
+ * Operations:
+ * - find(x): xの根を返す O(α(n))
+ * - unite(x, y) xとyを同じ集合にする O(a(n))
+ * - same(x, y) xとyが同じ集合か判定する O(a(n))
+*/
+
+
+//------------------------------//
+// Usage Examples
+//------------------------------//
+
+// Example 1: Basic Usage
+// int main() {
+//     dsu d(5);
+//     d.unite(0, 1);
+//     d.unite(1, 2);
+//     cout << d.same(0, 2) << endl; // 1 
+//     cout << d.same(1, 3) << endl; // 0
+// }
+
+// Example 2: AOJ DSL_1_A
+// https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/1/DSL_1_A
+// int main() {
+//     int N, Q;
+//     cin >> N >> Q;
+
+//     dsu d(N);
+//     for (int i = 0; i < Q; i++) {
+//         int com, x, y;
+//         cin >> com >> x >> y;
+//         if (com == 0) {
+//             d.unite(x, y);
+//         } else if (com == 1) {
+//             if (d.same(x, y)) {
+//                 cout << 1 << endl;
+//             } else {
+//                 cout << 0 << endl;
+//             } 
+//         }
+//     }
+// }
