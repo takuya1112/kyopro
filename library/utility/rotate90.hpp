@@ -49,25 +49,21 @@ std::vector<std::string> right_rot90(const std::vector<std::string>& array) {
 
 // Example 1: Basic Usage
 // int main() {
-    // 配列の構造
-    // 0 1 1 0 
-    // 1 0 0 1 
-    // 0 1 0 0 
-    // vector<vector<int>> array(3, vector<int>(4));
-    // array[0] = {0, 1, 1, 0};
-    // array[1] = {1, 0, 0, 1};
-    // array[2] = {0, 1, 0, 0};
+//     配列の構造
+//     0 1 1 0 
+//     1 0 0 1 
+//     0 1 0 0 
+//     vector<vector<int>> array(3, vector<int>(4));
+//     array[0] = {0, 1, 1, 0};
+//     array[1] = {1, 0, 0, 1};
+//     array[2] = {0, 1, 0, 0};
 
-    // array = right_rot90(array);
-    // for (int i = 0; i < array.size(); i++) {
-    //     for (int j = 0; j < array[i].size(); j++) {
-    //         cout << array[i][j] << ' ';
-    //     } cout << endl;
-    // }
-    // 0 1 0 
-    // 1 0 1 
-    // 0 0 1 
-    // 0 1 0 
+//     array = right_rot90(array);
+//     cout << array << endl;
+//     0 1 0 
+//     1 0 1 
+//     0 0 1 
+//     0 1 0 
 // }
 
 // Example 2: Atcoder abc298_b

@@ -56,8 +56,8 @@ struct dsu {
 // Example 1: Basic Usage
 // int main() {
 //     dsu d(5);
-//     d.unite(0, 1);
-//     d.unite(1, 2);
+//     d.unite(0, 1); // 0-1 2 3 4
+//     d.unite(1, 2); // 0-1-2 3 4
 //     cout << d.same(0, 2) << endl; // 1 
 //     cout << d.same(1, 3) << endl; // 0
 // }
