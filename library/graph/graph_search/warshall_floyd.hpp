@@ -11,7 +11,8 @@
 
 const long long INF = 4e18;
 
-void warshall(std::vector<std::vector<long long>>& dist) {
+template<typename T>
+void warshall(std::vector<std::vector<T>>& dist) {
     int N = dist.size();
     for (int i = 0; i < N; i++) dist[i][i] = 0;
 
