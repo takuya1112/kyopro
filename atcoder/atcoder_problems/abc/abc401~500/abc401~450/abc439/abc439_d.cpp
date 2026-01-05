@@ -252,28 +252,82 @@ const int dy8[8] = {0, 1, 0, -1, 1, 1, -1, -1};
 //                  solve
 // ========================================
 
-void solve() {
-    int N;
-    cin >> N;
-    vi A(N);
-    read(A);
-    vi cnt_7(N), cnt_3(N);
-    rep(i, N) {
-        if (A[i] % 7 == 0) cnt_7[i] = A[i] / 7;
-        if (A[i] % 3 == 0) cnt_3[i] = A[i] / 3;
-    }
-    cout << cnt_7 << endl;
-    cout << cnt_3 << endl;
+ll solve(vll &v7, vll &v5, vll &v3) {
+    ll res = ssize(v7);
+    res *= ssize(v5);
+    res *= ssize(v3);
+    if (res == 0) { return 0; }
 
-    ll ans = 0;
-    rep(i, N) {
-        if (A[i] % 5) continue;
-        
+    vpll vp;
+    for (auto &nx : v7) { vp.pb({nx, 7}); }
+    for (auto &nx : v5) { vp.pb({nx, 5}); }
+    for (auto &nx : v3) { vp.pb({nx, 3}); }
+    sort(all(vp));
+    ll p7 = 0, s7 = v7.size();
+    ll p3 = 0, s3 = v3.size();
+    for (auto &nx : vp) {
+        if (nx.se == 7) {
+            p7++; s7--;
+        }
+        else if (nx.se == 5) {
+            res -= p7 * s3;
+            res -= p3 * s7;
+        }
+        else if (nx.se == 3) {
+            p3++; s3--;
+        }
     }
+    return res;
 }
+
 
 int main() {
-    int t = 1;
-    while (t--) solve();
+    ll n;
+    cin >> n;
+    map<pll, vll> mp;
+    sll tst;
+    rep(i, n) {
+        ll a;
+        cin >> a;
+        if (a % 7 == 0) {
+            mp[{a/7, 7}].pb(i);
+            tst.insert(a/7);
+        }
+        if (a % 5 == 0) { mp[{a/5, 5}].pb(i); }
+        if (a % 3 == 0) { mp[{a/3, 3}].pb(i); }
+    }
+
+    ll res = 0;
+    for (auto &nx : tst) {
+        res += solve(mp[{nx, 7}], mp[{nx, 5}], mp[{nx, 3}]);
+    }
+    print(res);
     return 0;
 }
+
+// mycode WA
+// void solve() {
+//     int N;
+//     cin >> N;
+//     vi A(N);
+//     read(A);
+//     vi cnt_7(N), cnt_3(N);
+//     rep(i, N) {
+//         if (A[i] % 7 == 0) cnt_7[i] = A[i] / 7;
+//         if (A[i] % 3 == 0) cnt_3[i] = A[i] / 3;
+//     }
+//     cout << cnt_7 << endl;
+//     cout << cnt_3 << endl;
+
+//     ll ans = 0;
+//     rep(i, N) {
+//         if (A[i] % 5) continue;
+        
+//     }
+// }
+
+// int main() {
+//     int t = 1;
+//     while (t--) solve();
+//     return 0;
+// }
