@@ -8,17 +8,23 @@
     height: 3em;
 }
 
-.chunk > div {
-    width: 300px;
-    height: auto;
-    border: 2px solid black;
-    margin: 10px auto;
-}
-
 .chunk {
     display: inline-block;
     text-decoration: none;
     color: inherit;
+}
+
+
+.chunk > div {
+    border: 2px solid black;
+    margin: 10px auto;
+
+    max-width: 400px;
+    transition: max-width 0.4s ease;
+}
+
+.chunk > div > img {
+    width: 100%;
 }
 
 .chunk > div > p {
@@ -27,3 +33,11 @@
     font-size: large;
     font-weight: 600;
 }
+
+@media (min-width: 431px) and (max-width: 850px) {
+    .chunk > div {
+        max-width: 300px;
+        
+    }
+}
+
