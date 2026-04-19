@@ -29,6 +29,14 @@
       "program": "${file}",
       "cwd": "${fileDirname}",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Ruby: Current File",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "${file}",
+      "args": [],
+      "cwd": "${fileDirname}"
     }
   ]
 }
